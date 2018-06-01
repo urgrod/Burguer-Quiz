@@ -1,0 +1,6 @@
+variable qui contient un entier pour la vue
+boolen qui va dire si la personne est authentifiee
+appel d'une fonction qui va afficher telle ou telle vue suivant la valeur de l'entier et du boolen
+
+qblGeneral va prendre en parametre la vue qu'il faut afficher
+
