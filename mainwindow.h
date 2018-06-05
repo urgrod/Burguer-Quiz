@@ -18,6 +18,7 @@
 #include <QComboBox>
 #include <QRadioButton>
 #include <QSpinBox>
+#include <QTabWidget>
 
 class MainWindow : public QMainWindow
 {
@@ -27,30 +28,29 @@ public:
      MainWindow();
     ~MainWindow();
 
-     QMenuBar *createMenu();
-//     void createAction();
-//     void contextMenuEvent(QContextMenuEvent *event) override;
-
      //differentes vue
-     QGroupBox *createViewLogin();
-     QGroupBox *createViewHome();
-     QGroupBox *createViewProposition();
-     QGroupBox *createViewQuestion();
-     QGroupBox *createViewTheme();
-     QGroupBox *createViewUser();
-     QGroupBox *displayView(int idView);
+     QLayout *createViewLogin();
+     QLayout *createViewHome();
+     QLayout *createViewProposition();
+     QLayout *createViewQuestion();
+     QLayout *createViewTheme();
+     QLayout *createViewUser();
+     QLayout *createViewLogout();
 
 private:
 
      QWidget *widgetGeneral;
-     QWidget *topWidget;
 
-     QMenu *accueilMenu;
-     QMenu *propositionsMenu;
-     QMenu *questionsMenu;
-     QMenu *userMenu;
-     QMenu *quitMenu;
-     QMenu *themeMenu;
+     //menu
+     QTabWidget *onglets;
+     QWidget *pageAccueil;
+     QWidget *pageTheme;
+     QWidget *pageQuestions;
+     QWidget *pagePropositions;
+     QWidget *pageUser;
+     QWidget *pageLogout;
+
+
 
      //interface login
      QLineEdit *loginInput;
@@ -123,14 +123,12 @@ private:
      QPushButton *updateUserButton;
      QPushButton *deleteUserButton;
 
-private slots:
-     void displayAccueil();
-     void displayHome();
-     void displayQuestions();
-     void displayPropositions();
-     void displayTheme();
-     void displayUser();
-     void logout();
+     //interface logout
+     QPushButton *logoutButton;
+     QPushButton *quitButton;
+
+public slots:
+
 };
 
 #endif // MAINWINDOW_H

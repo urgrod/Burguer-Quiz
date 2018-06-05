@@ -3,6 +3,7 @@
 MainWindow::MainWindow() : QMainWindow()
 {
     this->setWindowTitle("Burger Quiz - Administration");
+    this->resize(465,300);
 
     widgetGeneral = new QWidget;
     QHBoxLayout *qblGeneral = new QHBoxLayout;
@@ -11,38 +12,44 @@ MainWindow::MainWindow() : QMainWindow()
     widgetGeneral->setLayout(qblGeneral);
     this->setCentralWidget(widgetGeneral);
 
-//    qblGeneral->addWidget(createMenu());
-//    qblGeneral->addWidget(createViewLogin());
-//    qblGeneral->addWidget(createViewHome());
-//    qblGeneral->addWidget(createViewProposition());
-//    qblGeneral->addWidget(createViewQuestion());
-//    qblGeneral->addWidget(createViewTheme());
-//    qblGeneral->addWidget(createViewUser());
-        qblGeneral->addWidget(displayView(3));
+    //test
+    onglets = new QTabWidget(this);
+    onglets->setGeometry(0,0,465,300);
+
+    pageAccueil = new QWidget;
+    pageAccueil->setLayout(createViewHome());
+
+    pageTheme = new QWidget;
+    pageTheme->setLayout(createViewTheme());
+
+    pageQuestions = new QWidget;
+    pageQuestions->setLayout(createViewQuestion());
+
+    pagePropositions = new QWidget;
+    pagePropositions->setLayout(createViewProposition());
+
+    pageUser = new QWidget;
+    pageUser->setLayout(createViewUser());
+
+    pageLogout = new QWidget;
+    pageLogout->setLayout(createViewLogout());
 
 
+    onglets->addTab(pageAccueil, "Accueil");
+    onglets->addTab(pageTheme, "Theme");
+    onglets->addTab(pageQuestions, "Questions");
+    onglets->addTab(pagePropositions, "Propositions");
+    onglets->addTab(pageUser, "Utilisateur");
+    onglets->addTab(pageLogout, "Quitter");
 }
 
 MainWindow::~MainWindow()
 {
 }
 
-QMenuBar *MainWindow::createMenu()
+
+QLayout *MainWindow::createViewLogin()
 {
-    accueilMenu = menuBar()->addMenu(tr("&Accueil"));
-    themeMenu = menuBar()->addMenu(tr("&Theme"));
-    questionsMenu = menuBar()->addMenu(tr("&Questions"));
-    propositionsMenu = menuBar()->addMenu(tr("&Propositions"));
-    userMenu = menuBar()->addMenu(tr("&Utilisateur"));
-    quitMenu = menuBar()->addMenu(tr("&Quitter"));
-
-    return menuBar();
-}
-
-
-QGroupBox *MainWindow::createViewLogin()
-{
-    QGroupBox *qgrouBox = new QGroupBox;
 
     QHBoxLayout *qboxLayout1 = new QHBoxLayout;
     QHBoxLayout *qboxLayout2 = new QHBoxLayout;
@@ -79,33 +86,29 @@ QGroupBox *MainWindow::createViewLogin()
     qboxLayout4->addLayout(qboxLayout3);
 
 
-    qgrouBox->setLayout(qboxLayout4);
-
-
-    return qgrouBox;
+    return qboxLayout4;
 }
 
-QGroupBox *MainWindow::createViewHome()
+QLayout *MainWindow::createViewHome()
 {
-    QGroupBox *qgrouBox = new QGroupBox;
 
     QHBoxLayout *qboxLayout = new QHBoxLayout;
 
     QLabel *text  = new QLabel("Tableau des scores a afficher");
 
     qboxLayout->addWidget(text);
-    qboxLayout->addWidget(createMenu());
 
-    qgrouBox->setLayout(qboxLayout);
+//    qgrouBox->setLayout(qboxLayout);
 
-    return qgrouBox;
+//    return qgrouBox;
+
+    return qboxLayout;
 
 }
 
-QGroupBox *MainWindow::createViewProposition()
+QLayout *MainWindow::createViewProposition()
 {
 
-    QGroupBox *qgroupBox = new QGroupBox;
 
     QHBoxLayout *qboxLayout1 = new QHBoxLayout;
     QHBoxLayout *qboxLayout2 = new QHBoxLayout;
@@ -138,9 +141,9 @@ QGroupBox *MainWindow::createViewProposition()
     answerRadio7 = new QRadioButton("Question 1");
     answerRadio8 = new QRadioButton("Question2");
     answerRadio9 = new QRadioButton("les 2");
-    addPropositionButton = new QPushButton("Ajouter les propositions");
-    updatePropositionButton = new QPushButton("Modifier les propositions");
-    deletePropositionButton = new QPushButton("Supprimer les propositions");
+    addPropositionButton = new QPushButton("Ajouter");
+    updatePropositionButton = new QPushButton("Modifier");
+    deletePropositionButton = new QPushButton("Supprimer");
 
 
     qboxLayout9->addWidget(addPropositionLabel);
@@ -176,16 +179,11 @@ QGroupBox *MainWindow::createViewProposition()
     qboxLayout5->addLayout(qboxLayout6);
     qboxLayout5->addLayout(qboxLayout7);
     qboxLayout5->addLayout(qboxLayout3);
-    qboxLayout5->addWidget(createMenu());
 
-
-    qgroupBox->setLayout(qboxLayout5);
-
-    return qgroupBox;
-
+    return qboxLayout5;
 }
 
-QGroupBox *MainWindow::createViewQuestion()
+QLayout *MainWindow::createViewQuestion()
 {
     QGroupBox *qgroupBox = new QGroupBox;
 
@@ -204,9 +202,9 @@ QGroupBox *MainWindow::createViewQuestion()
     textLabel2 = new QLabel("ou les deux?");
     textLabel3 =new QLabel("Choisir un theme:");
     dropdownThemeProposition = new QComboBox;
-    addQuestionButton = new QPushButton("Ajouter la question");
-    updateQuestionButton = new QPushButton("Modifier la question");
-    deleteQuestionButton = new QPushButton("Supprimer la question");
+    addQuestionButton = new QPushButton("Ajouter");
+    updateQuestionButton = new QPushButton("Modifier");
+    deleteQuestionButton = new QPushButton("Supprimer");
 
     qboxLayout1->addWidget(dropdownThemeProposition);
     qboxLayout1->addWidget(dropdownQuestion);
@@ -227,18 +225,15 @@ QGroupBox *MainWindow::createViewQuestion()
     qboxLayout5->addLayout(qboxLayout2);
     qboxLayout5->addLayout(qboxLayout3);
     qboxLayout5->addLayout(qboxLayout4);
-    qboxLayout5->addWidget(createMenu());
 
-    qgroupBox->setLayout(qboxLayout5);
 
-    return qgroupBox;
+    return qboxLayout5;
 
 }
 
 
-QGroupBox *MainWindow::createViewTheme()
+QLayout *MainWindow::createViewTheme()
 {
-    QGroupBox *qgroupBox = new QGroupBox;
 
     QHBoxLayout *qboxLayout1 = new QHBoxLayout;
     QHBoxLayout *qboxLayout2 = new QHBoxLayout;
@@ -266,16 +261,13 @@ QGroupBox *MainWindow::createViewTheme()
     qboxLayout5->addLayout(qboxLayout1);
     qboxLayout5->addLayout(qboxLayout2);
     qboxLayout5->addLayout(qboxLayout3);
-    qboxLayout5->addWidget(createMenu());
 
-    qgroupBox->setLayout(qboxLayout5);
 
-    return qgroupBox;
+    return qboxLayout5;
 }
 
-QGroupBox *MainWindow::createViewUser()
+QLayout *MainWindow::createViewUser()
 {
-    QGroupBox *qgroupBox = new QGroupBox;
 
     QHBoxLayout *qboxLayout1 = new QHBoxLayout;
     QHBoxLayout *qboxLayout2 = new QHBoxLayout;
@@ -330,28 +322,26 @@ QGroupBox *MainWindow::createViewUser()
     qboxLayout8->addLayout(qboxLayout5);
     qboxLayout8->addLayout(qboxLayout6);
     qboxLayout8->addLayout(qboxLayout7);
-    qboxLayout8->addWidget(createMenu());
 
-    qgroupBox->setLayout(qboxLayout8);
 
-    return qgroupBox;
+    return qboxLayout8;
 
 }
 
-QGroupBox *MainWindow::displayView(int idView)
+QLayout *MainWindow::createViewLogout()
 {
-    if(idView == 0) return createViewLogin();
 
-    if(idView == 1) return createViewHome();
+    QHBoxLayout *qboxLayout1 = new QHBoxLayout;
 
-    if(idView == 2) return createViewQuestion();
+    QVBoxLayout *qboxLayout2 = new QVBoxLayout;
 
-    if(idView == 3) return createViewProposition();
+    logoutButton = new QPushButton("Se deconnecter");
+    quitButton = new QPushButton("Quitter le programme");
 
-    if(idView == 4) return createViewTheme();
+    qboxLayout1->addWidget(logoutButton);
+    qboxLayout1->addWidget(quitButton);
 
-    if(idView == 5) return createViewUser();
+    qboxLayout2->addLayout(qboxLayout1);
 
-    if(idView != 0 ||idView != 1 ||idView != 2 ||idView != 3 ||idView != 4 ||idView != 5) return createViewLogin();
-
+    return qboxLayout2;
 }

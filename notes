@@ -4,3 +4,7 @@ appel d'une fonction qui va afficher telle ou telle vue suivant la valeur de l'e
 
 qblGeneral va prendre en parametre la vue qu'il faut afficher
 
+
+slot qui affiche le vue
+-> soit direct dans le connect
+-> soit le slot return QGroupBox qui retourne dans le controller
