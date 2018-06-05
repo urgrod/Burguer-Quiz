@@ -17,6 +17,7 @@
 #include <QList>
 #include <QComboBox>
 #include <QRadioButton>
+#include <QSpinBox>
 
 class MainWindow : public QMainWindow
 {
@@ -26,7 +27,7 @@ public:
      MainWindow();
     ~MainWindow();
 
-//     void createMenu();
+     QMenuBar *createMenu();
 //     void createAction();
 //     void contextMenuEvent(QContextMenuEvent *event) override;
 
@@ -35,12 +36,14 @@ public:
      QGroupBox *createViewHome();
      QGroupBox *createViewProposition();
      QGroupBox *createViewQuestion();
+     QGroupBox *createViewTheme();
+     QGroupBox *createViewUser();
+     QGroupBox *displayView(int idView);
 
 private:
 
      QWidget *widgetGeneral;
      QWidget *topWidget;
-     QGraphicsView *viewAccueil;
 
      QMenu *accueilMenu;
      QMenu *propositionsMenu;
@@ -49,42 +52,24 @@ private:
      QMenu *quitMenu;
      QMenu *themeMenu;
 
-     //menu question
-     QAction *createQuestion;
-     QAction *deleteQuestion;
-     QAction *readQuestion;
-     QAction *updateQuestion;
-     //menu proposition
-     QAction *createProposition;
-     QAction *deleteProposition;
-     QAction *readProposition;
-     QAction *updateProposition;
-     //menu theme
-     QAction *createTheme;
-     QAction *deleteTheme;
-     QAction *readTheme;
-     QAction *updateTheme;
-     //menu user
-     QAction *createUser;
-     QAction *deleteUser;
-     QAction *readUser;
-     QAction *updateUser;
-     //menu autres
-     QAction *logout;
-
      //interface login
      QLineEdit *loginInput;
      QLineEdit *passwordInput;
+     QLineEdit *ipDatabaseInput;
      QLineEdit *passwordDatabaseInput;
      QPushButton *loginButton;
      QLabel *loginText;
      QLabel *passwordText;
      QLabel *passworddatabaseText;
+     QLabel *ipDatabaseText;
+
 
      //interface d'accueil
 
      //interface proposition
      QComboBox *dropdownQuestion;
+     QComboBox *dropdownThemeProposition;
+     QSpinBox *dropdownNbProposition;
      QLineEdit *addProposition1;
      QLineEdit *addProposition2;
      QLineEdit *addProposition3;
@@ -110,14 +95,42 @@ private:
      QLabel *textLabel1;
      QLabel *textLabel2;
      QLabel *textLabel3;
-     QComboBox *dropdownTheme;
      QPushButton *addQuestionButton;
      QPushButton *updateQuestionButton;
      QPushButton *deleteQuestionButton;
 
+     //interface theme
+     QLabel *textTheme;
+     QLineEdit *inputTheme;
+     QComboBox *dropdownTheme;
+     QPushButton *addThemeButton;
+     QPushButton *updateThemeButton;
+     QPushButton *deleteThemeButton;
 
+     //interface user
+     QComboBox *dropdownUser;
+     QLineEdit *inputPseudo;
+     QLineEdit *inputName;
+     QLineEdit *inputFirstname;
+     QLineEdit *inputMail;
+     QLineEdit *inputAvatar;
+     QLineEdit *inputPasswordUser;
+     QLineEdit *inputPasswordVerifUser;
+     QLabel *textUser;
+     QRadioButton *adminYesRadio;
+     QRadioButton *adminNoRadio;
+     QPushButton *addUserButton;
+     QPushButton *updateUserButton;
+     QPushButton *deleteUserButton;
 
 private slots:
+     void displayAccueil();
+     void displayHome();
+     void displayQuestions();
+     void displayPropositions();
+     void displayTheme();
+     void displayUser();
+     void logout();
 };
 
 #endif // MAINWINDOW_H
