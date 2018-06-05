@@ -185,8 +185,6 @@ QLayout *MainWindow::createViewProposition()
 
 QLayout *MainWindow::createViewQuestion()
 {
-    QGroupBox *qgroupBox = new QGroupBox;
-
     QHBoxLayout *qboxLayout1 = new QHBoxLayout;
     QHBoxLayout *qboxLayout2 = new QHBoxLayout;
     QHBoxLayout *qboxLayout3 = new QHBoxLayout;
