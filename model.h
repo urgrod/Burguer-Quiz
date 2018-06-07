@@ -14,8 +14,11 @@ class Model:public QObject
 {
 public:
     Model();
-    void Database();
-    QByteArray request(const QString &query);
+    void connectToDatabase();
+    bool requestUser(int requestType, QString pseudo, QString password, QString mail, QString name, QString lastname, QString vip, QString avatar);
+    bool requestTheme(int requestType, QString nom, QString id);
+    bool requestQuestions(int requestType, QString libelle2, QString libelle1, QString idTheme, QString idQuestion);
+    bool requestPropositions(int requestType, QString idPropositions, QString proposition, QString reponseQuestion, QString idQuestion);
 
 private:
     QSqlDatabase db;
