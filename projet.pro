@@ -15,9 +15,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    model.cpp
+    model.cpp\
+controller.cpp
 
 HEADERS  += mainwindow.h \
-    model.h
+    model.h\
+controller.h
 
 FORMS    +=

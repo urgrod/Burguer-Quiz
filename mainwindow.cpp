@@ -1,7 +1,12 @@
 #include "mainwindow.h"
+#include "model.h"
+#include "controller.h"
 
 MainWindow::MainWindow() : QMainWindow()
 {
+    controller *control = new controller();
+    Model *model = new Model();
+
     this->setWindowTitle("Burger Quiz - Administration");
     this->resize(465,300);
 
@@ -41,6 +46,24 @@ MainWindow::MainWindow() : QMainWindow()
     onglets->addTab(pagePropositions, "Propositions");
     onglets->addTab(pageUser, "Utilisateur");
     onglets->addTab(pageLogout, "Quitter");
+
+    connect(quitButton, SIGNAL(clicked()), QApplication::instance(), SLOT(quit()));
+
+    connect(addPropositionButton, SIGNAL(clicked()), control, SLOT(slotCreateProposition()));
+    connect(updatePropositionButton, SIGNAL(clicked()), control, SLOT(slotUpdateProposition()));
+    connect(deletePropositionButton, SIGNAL(clicked()), control, SLOT(slotDeleteProposition()));
+
+    connect(addQuestionButton, SIGNAL(clicked(bool)), control, SLOT(slotCreateQuestion()));
+    connect(updateQuestionButton, SIGNAL(clicked(bool)), control, SLOT(slotUpdateQuestion()));
+    connect(deleteQuestionButton, SIGNAL(clicked(bool)), control, SLOT(slotDeleteQuestion()));
+
+    connect(addThemeButton, SIGNAL(clicked(bool)), control, SLOT(slotCreateTheme());
+    connect(updateThemeButton, SIGNAL(clicked(bool)), control, SLOT(slotUpdateTheme()));
+    connect(deleteThemeButton, SIGNAL(clicked(bool)), control, SLOT(slotDeleteTheme()));
+
+    connect(addUserButton, SIGNAL(clicked(bool)), control, SLOT(slotCreateUser()));
+    connect(updateUserButton, SIGNAL(clicked(bool)), control, SLOT(slotUpdateUser()));
+    connect(deleteUserButton, SIGNAL(clicked(bool)), control, SLOT(slotDeleteUser(   )));
 }
 
 MainWindow::~MainWindow()

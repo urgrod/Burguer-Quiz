@@ -19,6 +19,8 @@
 #include <QRadioButton>
 #include <QSpinBox>
 #include <QTabWidget>
+#include <QAction>
+#include <QApplication>
 
 class MainWindow : public QMainWindow
 {

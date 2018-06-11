@@ -8,3 +8,6 @@ qblGeneral va prendre en parametre la vue qu'il faut afficher
 slot qui affiche le vue
 -> soit direct dans le connect
 -> soit le slot return QGroupBox qui retourne dans le controller
+
+hash du mdp de la db dans le fichier
+	-> comparaison du hash du mdp saisi avec le hash du fichier

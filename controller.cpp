@@ -5,97 +5,97 @@ controller::controller()
 
 }
 
-controller::slotCreateProposition()
+void controller::slotCreateProposition()
 {
 
 }
 
-controller::slotReadAllProposition()
+void controller::slotReadAllProposition()
 {
 
 }
 
-controller::slotReadOneProposition()
+void controller::slotReadOneProposition()
 {
 
 }
 
-controller::slotUpdateProposition()
+void controller::slotUpdateProposition()
 {
 
 }
 
-controller::slotDeleteProposition()
+void controller::slotDeleteProposition()
 {
 
 }
 
-controller::slotCreateQuestion()
+void controller::slotCreateQuestion()
 {
 
 }
 
-controller::slotReadAllQuestion()
+void controller::slotReadAllQuestion()
 {
 
 }
 
-controller::slotUpdateQuestion()
+void controller::slotUpdateQuestion()
 {
 
 }
 
-controller::slotDeleteQuestion()
+void controller::slotDeleteQuestion()
 {
 
 }
 
-controller::slotCreateTheme()
+void controller::slotCreateTheme()
 {
 
 }
 
-controller::slotReadAllTheme()
+void controller::slotReadAllTheme()
 {
 
 }
 
-controller::slotReadOneTheme()
+void controller::slotReadOneTheme()
 {
 
 }
 
-controller::slotUpdateTheme()
+void controller::slotUpdateTheme()
 {
 
 }
 
-controller::slotDeleteTheme()
+void controller::slotDeleteTheme()
 {
 
 }
 
-controller::slotCreateUser()
+void controller::slotCreateUser()
 {
 
 }
 
-controller::slotReadAllTheme()
+void controller::slotReadAllUser()
 {
 
 }
 
-controller::slotReadOneUser()
+void controller::slotReadOneUser()
 {
 
 }
 
-controller::slotUpdateUser()
+void controller::slotUpdateUser()
 {
 
 }
 
-controller::slotDeleteUser()
+void controller::slotDeleteUser()
 {
 
 }
