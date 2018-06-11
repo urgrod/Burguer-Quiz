@@ -8,11 +8,17 @@ Model::Model()
 
 void Model::connectToDatabase(QString password, QString ip)
 {
-    db = QSqlDatabase::addDatabase("QSQLITE");
+    qDebug()<<"ok connect1";
+
+    *db = QSqlDatabase::addDatabase("QSQLITE");
+
+    qDebug()<<"ok connect2";
 
     QFile file("bdd.conf");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&file);
+
+    qDebug()<<"ok connect3";
 
     QStringList line;
 
@@ -20,21 +26,24 @@ void Model::connectToDatabase(QString password, QString ip)
     {
         line << flux.readLine();
     }
+    qDebug()<<"ok connect4";
 
-    db.setHostName(ip);
-    db.setUserName(line[1]);
-    db.setPassword(password);
-    db.setDatabaseName(line[3]);
 
-    qDebug() << db.open();
+    db->setHostName("127.0.0.1");
+    db->setUserName("root");
+    db->setPassword(password);
+    db->setDatabaseName(line[3]);
+    db->setPort(3306);
+    db->open();
+    qDebug()<< "db connect" << *db;
 
-    if(db.open())
+    if(db->isOpen())
     {
-        qDebug() << "[INFO] Connexion sur " << db.hostName() <<" reussie";
+        qDebug() << "[INFO] Connexion sur " << db->hostName() <<" reussie";
     }
     else
     {
-        qDebug() << "[ERROR] Connexion sur " << db.hostName() << "echouee";
+        qDebug() << "[ERROR] Connexion sur " << db->hostName() << "echouee";
 
     }
 }
@@ -42,7 +51,7 @@ void Model::connectToDatabase(QString password, QString ip)
 void Model::requestUser(int requestType, QString pseudo, QString password, QString mail, QString name, QString lastname, QString vip, QString avatar)
 {
 
-    QSqlQuery query;
+    query = new QSqlQuery;
     QString request;
     QString base;
     QString value;
@@ -53,7 +62,7 @@ void Model::requestUser(int requestType, QString pseudo, QString password, QStri
         base = "INSERT INTO `USER` (`pseudo`, `password`, `mail`, `name`, `lastname`, `vip`, `avatar`) ";
         value = "VALUES ('"+ pseudo +"', '"+ password +"', '"+ mail + "', '"+ name +"', '"+ lastname +"', '"+ vip + "', '"+ avatar +"');";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
     }
 
@@ -64,7 +73,7 @@ void Model::requestUser(int requestType, QString pseudo, QString password, QStri
         value = "";
         request = base +value;
 
-        query.exec(request);
+        query->exec(request);
 
     }
 
@@ -74,6 +83,8 @@ void Model::requestUser(int requestType, QString pseudo, QString password, QStri
         base = "SELECT * FROM `USER` ";
         value = "WHERE `pseudo` = '"+ pseudo +"'";
         request = base + value;
+
+        query->exec(request);
 
     }
 
@@ -105,7 +116,7 @@ void Model::requestUser(int requestType, QString pseudo, QString password, QStri
 bool Model::requestTheme(int requestType, QString nom, QString id)
 {
 
-    QSqlQuery query;
+    query = new QSqlQuery;
     QString request;
     QString base;
     QString value;
@@ -117,9 +128,9 @@ bool Model::requestTheme(int requestType, QString nom, QString id)
         base = "INSERT INTO THEME (name_theme) ";
         value = "VALUES = '"+ nom +"';";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
-        if(query.exec(base)) return 1;
+        if(query->exec(base)) return 1;
         else return 0;
 
     }
@@ -130,10 +141,10 @@ bool Model::requestTheme(int requestType, QString nom, QString id)
         base = "SELECT * FROM theme ";
         value = "";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
 
-        if(query.exec(base)) return 1;
+        if(query->exec(base)) return 1;
         else return 0;
 
     }
@@ -144,10 +155,10 @@ bool Model::requestTheme(int requestType, QString nom, QString id)
         base = "SELECT * FROM theme ";
         value = "WHERE id_theme = '"+ id +"';";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
 
-        if(query.exec(base)) return 1;
+        if(query->exec(base)) return 1;
         else return 0;
 
     }
@@ -158,10 +169,10 @@ bool Model::requestTheme(int requestType, QString nom, QString id)
         base = "UPDATE theme ";
         value = "SET name_theme = '"+ nom +"' WHERE theme.id_theme = '"+ id +"';";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
 
-        if(query.exec(base)) return 1;
+        if(query->exec(base)) return 1;
         else return 0;
 
     }
@@ -172,10 +183,10 @@ bool Model::requestTheme(int requestType, QString nom, QString id)
         base = "DELETE FROM theme ";
         value = "WHERE id_theme = '"+ id +"';";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
 
-        if(query.exec(base)) return 1;
+        if(query->exec(base)) return 1;
         else return 0;
 
     }
@@ -186,7 +197,7 @@ bool Model::requestTheme(int requestType, QString nom, QString id)
 bool Model::requestQuestions(int requestType, QString libelle2, QString libelle1, QString idTheme, QString idQuestion)
 {
 
-    QSqlQuery query;
+    query = new QSqlQuery;
     QString request;
     QString base;
     QString value;
@@ -197,9 +208,9 @@ bool Model::requestQuestions(int requestType, QString libelle2, QString libelle1
         base = "INSERT INTO questions (id_questions, libelle1, libelle2, id_theme) ";
         value = "VALUES ( NULL, '"+ libelle1 +"', "+ libelle2 +"', '"+ idTheme +"';";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
-        if(query.exec(request)) return 1;
+        if(query->exec(request)) return 1;
         else return 0;
     }
 
@@ -209,9 +220,9 @@ bool Model::requestQuestions(int requestType, QString libelle2, QString libelle1
         base = "SELECT * FROM questions ";
         value = "";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
-        if(query.exec(request)) return 1;
+        if(query->exec(request)) return 1;
         else return 0;
     }
 
@@ -221,9 +232,9 @@ bool Model::requestQuestions(int requestType, QString libelle2, QString libelle1
         base = "SELECT * FROM questions ";
         value = "WHERE id_questions = '"+ idQuestion +"';";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
-        if(query.exec(request)) return 1;
+        if(query->exec(request)) return 1;
         else return 0;
     }
 
@@ -233,9 +244,9 @@ bool Model::requestQuestions(int requestType, QString libelle2, QString libelle1
         base = "UPDATE quesitons SET ";
         value = "libelle1 = '"+ libelle1 +"', libelle2 = '"+ libelle2 +"', WHERE questions.id_quesiton = '"+ idQuestion +"';";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
-        if(query.exec(request)) return 1;
+        if(query->exec(request)) return 1;
         else return 0;
     }
 
@@ -245,9 +256,9 @@ bool Model::requestQuestions(int requestType, QString libelle2, QString libelle1
         base = "DELETE FROM questions";
         value = "WHERE questions.id_question = '"+ idQuestion +"'";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
-        if(query.exec(request)) return 1;
+        if(query->exec(request)) return 1;
         else return 0;
     }
 
@@ -255,7 +266,7 @@ bool Model::requestQuestions(int requestType, QString libelle2, QString libelle1
 
 bool Model::requestPropositions(int requestType, QString idPropositions, QString proposition, QString reponseQuestion, QString idQuestion)
 {
-    QSqlQuery query;
+    query = new QSqlQuery;
     QString request;
     QString base;
     QString value;
@@ -266,9 +277,9 @@ bool Model::requestPropositions(int requestType, QString idPropositions, QString
         base = "INSERT INTO propositions (id_propositions, proposition, reponse_question, id_question) VALUES ";
         value = " (NULL, '"+ proposition +"', '"+ reponseQuestion +"', '"+ idQuestion +"';";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
-        if(query.exec(request)) return 1;
+        if(query->exec(request)) return 1;
         else return 0;
     }
 
@@ -278,9 +289,9 @@ bool Model::requestPropositions(int requestType, QString idPropositions, QString
         base = "SELECT * FROM propositions;";
         value = "";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
-        if(query.exec(request)) return 1;
+        if(query->exec(request)) return 1;
         else return 0;
     }
 
@@ -290,9 +301,9 @@ bool Model::requestPropositions(int requestType, QString idPropositions, QString
         base = "SELECT * FROM propositions WHERE ";
         value = "id_propositions = '"+ idPropositions +"';";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
-        if(query.exec(request)) return 1;
+        if(query->exec(request)) return 1;
         else return 0;
     }
 
@@ -302,9 +313,9 @@ bool Model::requestPropositions(int requestType, QString idPropositions, QString
         base = "UPDATE propositions SET ";
         value = "proposition = '"+ proposition +"', reponse_question = '"+ reponseQuestion +"' WHERE propositions.id_proposition = '"+ idPropositions +"'";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
-        if(query.exec(request)) return 1;
+        if(query->exec(request)) return 1;
         else return 0;
     }
 
@@ -314,9 +325,9 @@ bool Model::requestPropositions(int requestType, QString idPropositions, QString
         base = "DELETE FROM propositions WHERE ";
         value = "propositions.id_proposition = '"+ idPropositions +"';";
         request = base + value;
-        query.exec(request);
+        query->exec(request);
 
-        if(query.exec(request)) return 1;
+        if(query->exec(request)) return 1;
         else return 0;
     }
 
@@ -327,9 +338,11 @@ bool Model::authentificationUser(QString pseudo, QString password, QString passw
 {
     Controller *control = new Controller();
     Model *model = new Model();
-    model->requestUser(3, pseudo, password, pseudo, pseudo, pseudo, pseudo, pseudo);
-    QByteArray hashDatabase = QCryptographicHash::hash(passwordDatabase.toUtf8(), QCryptographicHash::Sha256);
+
+    QByteArray ba = QCryptographicHash::hash(passwordDatabase.toUtf8(), QCryptographicHash::Sha256);
     QByteArray hash = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
+    QString hashDatabase = ba.toHex();
+
     QFile file("bdd.conf");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&file);
@@ -339,17 +352,32 @@ bool Model::authentificationUser(QString pseudo, QString password, QString passw
     while(!flux.atEnd())
     {
         line << flux.readLine();
+
     }
 
+    qDebug()<<"line 2" <<line[2];
 
     if(line[2] == hashDatabase)
     {
-        qDebug() << "[INFO] Authentification reussie, login: " << pseudo;
-        model->connectToDatabase(passwordDatabase, ip);
+        qDebug()<<"ok"<<hashDatabase;
+        model->connectToDatabase(password, ip);
+        qDebug()<<"ok 2 connect";
+//        qDebug() << db->isOpen();
 
-        if(pseudo == query.record().fieldName('pseudo') && hashDatabase == line[2] && hash == query.record().fieldName('password'))
+//        qDebug() << "db" << db->isOpen();
+//        qDebug() << "pseudo" << query->record().fieldName('pseudo');
+//        qDebug() << "password" << query->record().fieldName('password');
+
+        model->requestUser(3, pseudo, password, pseudo, pseudo, pseudo, pseudo, pseudo);
+
+
+
+
+        if(pseudo == query->record().fieldName('pseudo') && hashDatabase == line[2] && hash == query->record().fieldName('password'))
         {
             control->setAuth(1);
+            qDebug() << "[INFO] Authentification reussie, login: " << pseudo;
+
             //affichage de la vue d'administration
 
             return 1;

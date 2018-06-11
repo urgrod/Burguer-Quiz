@@ -23,9 +23,9 @@ public:
     bool authentificationUser(QString pseudo, QString password, QString passwordDatabase, QString ip);
 
 private:
-    QSqlDatabase db;
-    QSqlQuery query;
-    QSqlRecord record;
+    QSqlDatabase *db;
+    QSqlQuery *query;
+    QSqlRecord *record;
 };
 
 #endif // MODEL_H
