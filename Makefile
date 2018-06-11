@@ -50,10 +50,12 @@ OBJECTS_DIR   = ./
 
 SOURCES       = main.cpp \
 		mainwindow.cpp \
-		model.cpp moc_mainwindow.cpp
+		model.cpp \
+		controller.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		model.o \
+		controller.o \
 		moc_mainwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -112,9 +114,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		projet.pro mainwindow.h \
-		model.h main.cpp \
+		model.h \
+		controller.h main.cpp \
 		mainwindow.cpp \
-		model.cpp
+		model.cpp \
+		controller.cpp
 QMAKE_TARGET  = projet
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = projet
@@ -282,8 +286,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.h model.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp mainwindow.cpp model.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.h model.h controller.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp mainwindow.cpp model.cpp controller.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -330,11 +334,17 @@ main.o: main.cpp mainwindow.h \
 		model.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
-mainwindow.o: mainwindow.cpp mainwindow.h
+mainwindow.o: mainwindow.cpp mainwindow.h \
+		model.h \
+		controller.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
-model.o: model.cpp model.h
+model.o: model.cpp model.h \
+		controller.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o model.o model.cpp
+
+controller.o: controller.cpp controller.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o controller.o controller.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

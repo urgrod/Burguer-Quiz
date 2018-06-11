@@ -1,101 +1,111 @@
 #include "controller.h"
 
-controller::controller()
+Controller::Controller()
 {
 
 }
 
-void controller::slotCreateProposition()
+bool Controller::getAuth()
+{
+    return auth;
+}
+
+void Controller::setAuth(bool state)
+{
+    auth = state;
+}
+
+void Controller::slotCreateProposition()
 {
 
 }
 
-void controller::slotReadAllProposition()
+void Controller::slotReadAllProposition()
 {
 
 }
 
-void controller::slotReadOneProposition()
+void Controller::slotReadOneProposition()
 {
 
 }
 
-void controller::slotUpdateProposition()
+void Controller::slotUpdateProposition()
 {
 
 }
 
-void controller::slotDeleteProposition()
+void Controller::slotDeleteProposition()
 {
 
 }
 
-void controller::slotCreateQuestion()
+void Controller::slotCreateQuestion()
 {
 
 }
 
-void controller::slotReadAllQuestion()
+void Controller::slotReadAllQuestion()
 {
 
 }
 
-void controller::slotUpdateQuestion()
+void Controller::slotUpdateQuestion()
 {
 
 }
 
-void controller::slotDeleteQuestion()
+void Controller::slotDeleteQuestion()
 {
 
 }
 
-void controller::slotCreateTheme()
+void Controller::slotCreateTheme()
 {
 
 }
 
-void controller::slotReadAllTheme()
+void Controller::slotReadAllTheme()
 {
 
 }
 
-void controller::slotReadOneTheme()
+void Controller::slotReadOneTheme()
 {
 
 }
 
-void controller::slotUpdateTheme()
+void Controller::slotUpdateTheme()
 {
 
 }
 
-void controller::slotDeleteTheme()
+void Controller::slotDeleteTheme()
 {
 
 }
 
-void controller::slotCreateUser()
+void Controller::slotCreateUser()
 {
 
 }
 
-void controller::slotReadAllUser()
+void Controller::slotReadAllUser()
 {
 
 }
 
-void controller::slotReadOneUser()
+void Controller::slotReadOneUser()
 {
 
 }
 
-void controller::slotUpdateUser()
+void Controller::slotUpdateUser()
 {
 
 }
 
-void controller::slotDeleteUser()
+void Controller::slotDeleteUser()
 {
 
 }

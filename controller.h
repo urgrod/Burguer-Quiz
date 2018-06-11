@@ -4,10 +4,10 @@
 #include <QString>
 #include <QAction>
 
-class controller
+class Controller
 {
 public:
-    controller();
+    Controller();
 
 public slots:
     void slotLogin();
@@ -39,6 +39,9 @@ public slots:
     void slotReadOneUser();
     void slotUpdateUser();
     void slotDeleteUser();
+
+    void setAuth(bool state);
+    bool getAuth();
 
 private:
     QString pseudo;

@@ -1,11 +1,12 @@
 #include "model.h"
+#include "controller.h"
 
 Model::Model()
 {
 }
 
 
-void Model::connectToDatabase()
+void Model::connectToDatabase(QString password, QString ip)
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
 
@@ -20,9 +21,9 @@ void Model::connectToDatabase()
         line << flux.readLine();
     }
 
-    db.setHostName(line[0]);
+    db.setHostName(ip);
     db.setUserName(line[1]);
-    db.setPassword(line[2]);
+    db.setPassword(password);
     db.setDatabaseName(line[3]);
 
     qDebug() << db.open();
@@ -38,7 +39,7 @@ void Model::connectToDatabase()
     }
 }
 
-bool Model::requestUser(int requestType, QString pseudo, QString password, QString mail, QString name, QString lastname, QString vip, QString avatar)
+void Model::requestUser(int requestType, QString pseudo, QString password, QString mail, QString name, QString lastname, QString vip, QString avatar)
 {
 
     QSqlQuery query;
@@ -54,9 +55,6 @@ bool Model::requestUser(int requestType, QString pseudo, QString password, QStri
         request = base + value;
         query.exec(request);
 
-        if(query.exec(request)) return 1;
-        else return 0;
-
     }
 
     if(requestType == 2)
@@ -68,8 +66,6 @@ bool Model::requestUser(int requestType, QString pseudo, QString password, QStri
 
         query.exec(request);
 
-        if(query.exec(request)) return 1;
-        else return 0;
     }
 
     if(requestType == 3)
@@ -79,8 +75,6 @@ bool Model::requestUser(int requestType, QString pseudo, QString password, QStri
         value = "WHERE `pseudo` = '"+ pseudo +"'";
         request = base + value;
 
-        if(query.exec(base)) return 1;
-        else return 0;
     }
 
 
@@ -93,8 +87,6 @@ bool Model::requestUser(int requestType, QString pseudo, QString password, QStri
             + " `avatar` = '"+ avatar + "' ;";
         request = base +value;
 
-        if(query.exec(base)) return 1;
-        else return 0;
 
     }
 
@@ -106,8 +98,6 @@ bool Model::requestUser(int requestType, QString pseudo, QString password, QStri
         request = base + value;
         request = base + value;
 
-        if(query.exec(base)) return 1;
-        else return 0;
 
     }
 }
@@ -331,4 +321,48 @@ bool Model::requestPropositions(int requestType, QString idPropositions, QString
     }
 
 
+}
+
+bool Model::authentificationUser(QString pseudo, QString password, QString passwordDatabase, QString ip)
+{
+    Controller *control = new Controller();
+    Model *model = new Model();
+    model->requestUser(3, pseudo, password, pseudo, pseudo, pseudo, pseudo, pseudo);
+    QByteArray hashDatabase = QCryptographicHash::hash(passwordDatabase.toUtf8(), QCryptographicHash::Sha256);
+    QByteArray hash = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
+    QFile file("bdd.conf");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flux(&file);
+    QStringList line;
+
+
+    while(!flux.atEnd())
+    {
+        line << flux.readLine();
+    }
+
+
+    if(line[2] == hashDatabase)
+    {
+        qDebug() << "[INFO] Authentification reussie, login: " << pseudo;
+        model->connectToDatabase(passwordDatabase, ip);
+
+        if(pseudo == query.record().fieldName('pseudo') && hashDatabase == line[2] && hash == query.record().fieldName('password'))
+        {
+            control->setAuth(1);
+            //affichage de la vue d'administration
+
+            return 1;
+        }
+        else
+        {
+            control->setAuth(0);
+            return 0;
+        }
+    }
+    else{
+        qDebug() << "[INFO] Authentification echouee";
+        control->setAuth(0);
+        return 0;
+    }
 }
