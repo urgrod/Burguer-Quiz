@@ -8,17 +8,11 @@ Model::Model()
 
 void Model::connectToDatabase(QString password, QString ip)
 {
-    qDebug()<<"ok connect1";
-
-    *db = QSqlDatabase::addDatabase("QSQLITE");
-
-    qDebug()<<"ok connect2";
 
     QFile file("bdd.conf");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&file);
 
-    qDebug()<<"ok connect3";
 
     QStringList line;
 
@@ -26,66 +20,64 @@ void Model::connectToDatabase(QString password, QString ip)
     {
         line << flux.readLine();
     }
-    qDebug()<<"ok connect4";
 
+    driver =get_driver_instance();
+    connection = driver->connect(("tcp://" + ip.toStdString() + ":3306"), line[1].toStdString(), password.toStdString());
 
-    db->setHostName("127.0.0.1");
-    db->setUserName("root");
-    db->setPassword(password);
-    db->setDatabaseName(line[3]);
-    db->setPort(3306);
-    db->open();
-    qDebug()<< "db connect" << *db;
-
-    if(db->isOpen())
+    if(connection)
     {
-        qDebug() << "[INFO] Connexion sur " << db->hostName() <<" reussie";
+        connection->setSchema(line[3].toStdString());
+        qDebug()<< "[INFO] Connexion sur " << line[3] << "effectuee";
     }
-    else
-    {
-        qDebug() << "[ERROR] Connexion sur " << db->hostName() << "echouee";
+    else{
+        qDebug()<< "[ERROR] Connexion sur " << line[3] << "echouee";
 
     }
+
+
+
+
 }
 
 void Model::requestUser(int requestType, QString pseudo, QString password, QString mail, QString name, QString lastname, QString vip, QString avatar)
 {
-
-    query = new QSqlQuery;
-    QString request;
-    QString base;
-    QString value;
-
     if(requestType == 1)
     {
         //requete ajout
-        base = "INSERT INTO `USER` (`pseudo`, `password`, `mail`, `name`, `lastname`, `vip`, `avatar`) ";
-        value = "VALUES ('"+ pseudo +"', '"+ password +"', '"+ mail + "', '"+ name +"', '"+ lastname +"', '"+ vip + "', '"+ avatar +"');";
-        request = base + value;
-        query->exec(request);
+
+        statement = connection->prepareStatement("INSERT INTO USER (pseudo, password, mail, name, lastname, vip, avatar)"
+                                                " VALUES (?,?,?,?,?,?,?)");
+        statement->setString(1,pseudo.toStdString());
+        statement->setString(2,password.toStdString());
+        statement->setString(3,mail.toStdString());
+        statement->setString(4,name.toStdString());
+        statement->setString(5,lastname.toStdString());
+        statement->setString(7,avatar.toStdString());
+        statement->setString(6, vip.toStdString());
+
+        result = statement->executeQuery();
 
     }
 
     if(requestType == 2)
     {
         //requete lecture all
-        base = "SELECT * FROM `USER`";
-        value = "";
-        request = base +value;
+        statement = connection->prepareStatement("SELECT * FROM USER");
 
-        query->exec(request);
+        result = statement->executeQuery();
+
 
     }
 
     if(requestType == 3)
     {
         //requete lecture un seul
-        base = "SELECT * FROM `USER` ";
-        value = "WHERE `pseudo` = '"+ pseudo +"'";
-        request = base + value;
+        statement = connection->prepareStatement("SELECT * FROM USER WHERE pseudo =?");
 
-        query->exec(request);
+        statement->setString(1,pseudo.toStdString());
 
+        result = statement->executeQuery();
+        return;
     }
 
 
@@ -93,10 +85,19 @@ void Model::requestUser(int requestType, QString pseudo, QString password, QStri
     if(requestType == 4)
     {
         //requete update
-        base = "UPDATE `USER` SET ";
-        value = "`pseudo` ='" + pseudo +"', `password` = '"+ password + "', `mail` = '"+ mail + "' , `name` = '"+ name + "' , `lastname` = '"+ lastname + "' , `vip` = '"+ vip + "' ,"
-            + " `avatar` = '"+ avatar + "' ;";
-        request = base +value;
+        statement = connection->prepareStatement("UPDATE USER SET pseudo = ?, password = ?, mail = ?, name =?, lastname=?, vip =?, avatar =?;");
+
+        statement->setString(1,pseudo.toStdString());
+        statement->setString(2,password.toStdString());
+        statement->setString(3,mail.toStdString());
+        statement->setString(4,name.toStdString());
+        statement->setString(5,lastname.toStdString());
+        statement->setString(6,vip.toStdString());
+        statement->setString(7,avatar.toStdString());
+
+
+        result = statement->executeQuery();
+
 
 
     }
@@ -104,231 +105,207 @@ void Model::requestUser(int requestType, QString pseudo, QString password, QStri
     if(requestType == 5)
     {
         //requete delete
-        base = "DELETE FROM USER ";
-        value = "WHERE pseudo = '"+ pseudo +"'";
-        request = base + value;
-        request = base + value;
+        statement = connection->prepareStatement("DELETE FROM USER WHERE pseudo =?");
+
+        statement->setString(1,pseudo.toStdString());
+
+        result = statement->executeQuery();
+
 
 
     }
 }
 
-bool Model::requestTheme(int requestType, QString nom, QString id)
+void Model::requestTheme(int requestType, QString nom, int id)
 {
 
-    query = new QSqlQuery;
-    QString request;
-    QString base;
-    QString value;
 
 
     if(requestType == 1)
     {
         //requete ajout
-        base = "INSERT INTO THEME (name_theme) ";
-        value = "VALUES = '"+ nom +"';";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("INSERT INTO THEME name_theme VALUES (?)");
 
-        if(query->exec(base)) return 1;
-        else return 0;
+        statement->setString(1,nom.toStdString());
+
+        result = statement->executeQuery();
+
+
 
     }
 
     if(requestType == 2)
     {
         //requete read all
-        base = "SELECT * FROM theme ";
-        value = "";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("SELECT * FROM theme");
 
+        result = statement->executeQuery();
 
-        if(query->exec(base)) return 1;
-        else return 0;
 
     }
 
     if(requestType == 3)
     {
         //requete read 1
-        base = "SELECT * FROM theme ";
-        value = "WHERE id_theme = '"+ id +"';";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("SELECT * FROM theme WHERE id_theme = ?");
 
+        statement->setInt(1,id);
 
-        if(query->exec(base)) return 1;
-        else return 0;
+        result = statement->executeQuery();
+
 
     }
 
     if(requestType == 4)
     {
         //requete update
-        base = "UPDATE theme ";
-        value = "SET name_theme = '"+ nom +"' WHERE theme.id_theme = '"+ id +"';";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("UPDATE theme SET name_theme = ? WHERE theme.id_theme = ?");
+
+        statement->setString(1,nom.toStdString());
+        statement->setInt(2, id);
+
+        result = statement->executeQuery();
 
 
-        if(query->exec(base)) return 1;
-        else return 0;
 
     }
 
     if(requestType == 5)
     {
-        //requete delete
-        base = "DELETE FROM theme ";
-        value = "WHERE id_theme = '"+ id +"';";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("DELETE FROM theme WHERE theme.id_theme = ?");
 
+        statement->setInt(1,id);
 
-        if(query->exec(base)) return 1;
-        else return 0;
+        result = statement->executeQuery();
 
     }
 
 
 }
 
-bool Model::requestQuestions(int requestType, QString libelle2, QString libelle1, QString idTheme, QString idQuestion)
+void Model::requestQuestions(int requestType, QString libelle2, QString libelle1, int idTheme, int idQuestion)
 {
 
-    query = new QSqlQuery;
-    QString request;
-    QString base;
-    QString value;
 
     if(requestType == 1)
     {
         //requete ajout
-        base = "INSERT INTO questions (id_questions, libelle1, libelle2, id_theme) ";
-        value = "VALUES ( NULL, '"+ libelle1 +"', "+ libelle2 +"', '"+ idTheme +"';";
-        request = base + value;
-        query->exec(request);
 
-        if(query->exec(request)) return 1;
-        else return 0;
+        statement = connection->prepareStatement("INSERT INTO questions (id_questions, libelle1, libelle2, id_theme) VALUES (NULL, ?,?,?)");
+
+        statement->setString(1,libelle1.toStdString());
+        statement->setString(2,libelle2.toStdString());
+        statement->setInt(3,idTheme);
+
+        result = statement->executeQuery();
+
+
     }
 
     if(requestType == 2)
     {
         //requete read all
-        base = "SELECT * FROM questions ";
-        value = "";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("SELECT * FROM questions");
 
-        if(query->exec(request)) return 1;
-        else return 0;
+        result = statement->executeQuery();
     }
 
     if(requestType == 3)
     {
         //requete read 1
-        base = "SELECT * FROM questions ";
-        value = "WHERE id_questions = '"+ idQuestion +"';";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("SELECT * FROM questions WHERE id_questions = ?;");
 
-        if(query->exec(request)) return 1;
-        else return 0;
+        statement->setInt(1,idQuestion);
+
+        result = statement->executeQuery();
+
     }
 
     if(requestType == 4)
     {
         //requete update
-        base = "UPDATE quesitons SET ";
-        value = "libelle1 = '"+ libelle1 +"', libelle2 = '"+ libelle2 +"', WHERE questions.id_quesiton = '"+ idQuestion +"';";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("UPDATE questions SET libelle1 = ?, libelle2 = ?, WHERE questions.id_questions = ?;");
 
-        if(query->exec(request)) return 1;
-        else return 0;
+        statement->setString(1,libelle1.toStdString());
+        statement->setString(2,libelle2.toStdString());
+        statement->setInt(3,idQuestion);
+
+        result = statement->executeQuery();
+
     }
 
     if(requestType == 5)
     {
         //requete delete
-        base = "DELETE FROM questions";
-        value = "WHERE questions.id_question = '"+ idQuestion +"'";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("DELETE FROM questions WHERE id_questions = ?;");
 
-        if(query->exec(request)) return 1;
-        else return 0;
+        statement->setInt(1,idQuestion);
+
+        result = statement->executeQuery();
+
+
     }
 
 }
 
-bool Model::requestPropositions(int requestType, QString idPropositions, QString proposition, QString reponseQuestion, QString idQuestion)
+void Model::requestPropositions(int requestType, int idPropositions, QString proposition, QString reponseQuestion, int idQuestion)
 {
-    query = new QSqlQuery;
-    QString request;
-    QString base;
-    QString value;
 
     if(requestType == 1)
     {
         //requete ajout
-        base = "INSERT INTO propositions (id_propositions, proposition, reponse_question, id_question) VALUES ";
-        value = " (NULL, '"+ proposition +"', '"+ reponseQuestion +"', '"+ idQuestion +"';";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("INSERT INTO propositions (id_propositions, proposition, reponse_question, id_question) VALUES (NULL, ?, ?, ?);");
 
-        if(query->exec(request)) return 1;
-        else return 0;
+        statement->setString(1,proposition.toStdString());
+        statement->setString(2,reponseQuestion.toStdString());
+        statement->setInt(3, idQuestion);
+
+
+        result = statement->executeQuery();
     }
 
     if(requestType == 2)
     {
         //requete read all
-        base = "SELECT * FROM propositions;";
-        value = "";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("SELECT * FROM propositions");
 
-        if(query->exec(request)) return 1;
-        else return 0;
+        result = statement->executeQuery();
     }
 
     if(requestType == 3)
     {
         //requete read 1
-        base = "SELECT * FROM propositions WHERE ";
-        value = "id_propositions = '"+ idPropositions +"';";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("SELECT * FROM propositions WHERE id_propositions = ?;");
 
-        if(query->exec(request)) return 1;
-        else return 0;
+        statement->setInt(1, idPropositions);
+
+
+        result = statement->executeQuery();
     }
 
     if(requestType == 4)
     {
         //requete update
-        base = "UPDATE propositions SET ";
-        value = "proposition = '"+ proposition +"', reponse_question = '"+ reponseQuestion +"' WHERE propositions.id_proposition = '"+ idPropositions +"'";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("UPDATE propositions SET proposition = ?, reponse_question = ?, WHERE propositions.id_proposition = ?;");
 
-        if(query->exec(request)) return 1;
-        else return 0;
+        statement->setString(1,proposition.toStdString());
+        statement->setString(2, reponseQuestion.toStdString());
+        statement->setInt(3, idPropositions);
+
+
+        result = statement->executeQuery();
     }
 
     if(requestType == 5)
     {
         //requete delete
-        base = "DELETE FROM propositions WHERE ";
-        value = "propositions.id_proposition = '"+ idPropositions +"';";
-        request = base + value;
-        query->exec(request);
+        statement = connection->prepareStatement("DELETE FROM propositions WHERE propositions.id_proposition = ?;");
 
-        if(query->exec(request)) return 1;
-        else return 0;
+        statement->setInt(1, idPropositions);
+
+
+        result = statement->executeQuery();
+
     }
 
 
@@ -337,16 +314,22 @@ bool Model::requestPropositions(int requestType, QString idPropositions, QString
 bool Model::authentificationUser(QString pseudo, QString password, QString passwordDatabase, QString ip)
 {
     Controller *control = new Controller();
-    Model *model = new Model();
 
     QByteArray ba = QCryptographicHash::hash(passwordDatabase.toUtf8(), QCryptographicHash::Sha256);
-    QByteArray hash = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
+    QByteArray ba2 = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
     QString hashDatabase = ba.toHex();
+    QString hash = ba2.toHex();
 
     QFile file("bdd.conf");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&file);
     QStringList line;
+
+    connectToDatabase(password, ip);
+
+    requestUser(3, pseudo, password, pseudo, pseudo, pseudo, pseudo, pseudo);
+    result->next();
+    qDebug() << "result pseudo" << result->getString(1).c_str();
 
 
     while(!flux.atEnd())
@@ -355,28 +338,19 @@ bool Model::authentificationUser(QString pseudo, QString password, QString passw
 
     }
 
-    qDebug()<<"line 2" <<line[2];
-
     if(line[2] == hashDatabase)
     {
-        qDebug()<<"ok"<<hashDatabase;
-        model->connectToDatabase(password, ip);
-        qDebug()<<"ok 2 connect";
-//        qDebug() << db->isOpen();
+//        model->connectToDatabase(password, ip);
 
-//        qDebug() << "db" << db->isOpen();
-//        qDebug() << "pseudo" << query->record().fieldName('pseudo');
-//        qDebug() << "password" << query->record().fieldName('password');
-
-        model->requestUser(3, pseudo, password, pseudo, pseudo, pseudo, pseudo, pseudo);
+//        model->requestUser(3, pseudo, password, pseudo, pseudo, pseudo, pseudo, pseudo);
 
 
-
-
-        if(pseudo == query->record().fieldName('pseudo') && hashDatabase == line[2] && hash == query->record().fieldName('password'))
+        if(hashDatabase == line[2] /*+ conditions liees au retour de la requete*/)
         {
             control->setAuth(1);
             qDebug() << "[INFO] Authentification reussie, login: " << pseudo;
+//            qDebug() << "result pseudo" << result->getString(7).c_str();
+
 
             //affichage de la vue d'administration
 
@@ -394,3 +368,4 @@ bool Model::authentificationUser(QString pseudo, QString password, QString passw
         return 0;
     }
 }
+

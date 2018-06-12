@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = projet
 TEMPLATE = app
-
+LIBS += -lmysqlcppconn
 
 SOURCES += main.cpp\
         mainwindow.cpp \

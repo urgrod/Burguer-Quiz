@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
     QString ip = "127.0.0.1";
     QString password = "quizburger";
     QString pseudo = "admin";
+//    model->connectToDatabase(password, ip);
     bool reponse = model->authentificationUser(pseudo, password, password,ip);
     MainWindow w;
     w.show();
