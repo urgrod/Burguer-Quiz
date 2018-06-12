@@ -123,10 +123,17 @@ void Model::requestTheme(int requestType, QString nom, int id)
 
     if(requestType == 1)
     {
+
+        qDebug() <<"nom theme" << nom;
+
         //requete ajout
-        statement = connection->prepareStatement("INSERT INTO THEME name_theme VALUES (?)");
+        statement = connection->prepareStatement("INSERT INTO THEME (id_theme, name_theme) VALUES (NULL, '?');");
+
+        qDebug() <<"nom theme" << nom;
 
         statement->setString(1,nom.toStdString());
+
+        qDebug() <<"nom theme" << nom;
 
         result = statement->executeQuery();
 

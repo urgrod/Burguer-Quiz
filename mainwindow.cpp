@@ -4,6 +4,9 @@
 
 MainWindow::MainWindow() : QMainWindow()
 {
+
+    model = new Model();
+
     this->setWindowTitle("Burger Quiz - Administration");
     this->resize(465,300);
 
@@ -51,22 +54,23 @@ MainWindow::MainWindow() : QMainWindow()
     connect(loginButton, SIGNAL(clicked(bool)), this, SLOT(slotLogin()));
     connect(logoutButton, SIGNAL(clicked(bool)), this, SLOT(slotLogout()));
 
+    connect(addThemeButton, SIGNAL(clicked(bool)), this, SLOT(slotAddTheme()));
+    connect(updateThemeButton, SIGNAL(clicked(bool)), this, SLOT(slotUpdateTheme()));
+    connect(deleteThemeButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteTheme()));
 
-//    connect(addPropositionButton, SIGNAL(clicked()), control, SLOT(slotCreateProposition()));
-//    connect(updatePropositionButton, SIGNAL(clicked()), control, SLOT(slotUpdateProposition()));
-//    connect(deletePropositionButton, SIGNAL(clicked()), control, SLOT(slotDeleteProposition()));
 
-//    connect(addQuestionButton, SIGNAL(clicked(bool)), control, SLOT(slotCreateQuestion()));
-//    connect(updateQuestionButton, SIGNAL(clicked(bool)), control, SLOT(slotUpdateQuestion()));
-//    connect(deleteQuestionButton, SIGNAL(clicked(bool)), control, SLOT(slotDeleteQuestion()));
+//    connect(addPropositionButton, SIGNAL(clicked()), this, SLOT(slotCreateProposition()));
+//    connect(updatePropositionButton, SIGNAL(clicked()), this, SLOT(slotUpdateProposition()));
+//    connect(deletePropositionButton, SIGNAL(clicked()), this, SLOT(slotDeleteProposition()));
 
-//    connect(addThemeButton, SIGNAL(clicked(bool)), control, SLOT(slotCreateTheme());
-//    connect(updateThemeButton, SIGNAL(clicked(bool)), control, SLOT(slotUpdateTheme()));
-//    connect(deleteThemeButton, SIGNAL(clicked(bool)), control, SLOT(slotDeleteTheme()));
+//    connect(addQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotCreateQuestion()));
+//    connect(updateQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotUpdateQuestion()));
+//    connect(deleteQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteQuestion()));
 
-//    connect(addUserButton, SIGNAL(clicked(bool)), control, SLOT(slotCreateUser()));
-//    connect(updateUserButton, SIGNAL(clicked(bool)), control, SLOT(slotUpdateUser()));
-//    connect(deleteUserButton, SIGNAL(clicked(bool)), control, SLOT(slotDeleteUser(   )));
+//    connect(addUserButton, SIGNAL(clicked(bool)), this, SLOT(slotCreateUser()));
+//    connect(updateUserButton, SIGNAL(clicked(bool)), this, SLOT(slotUpdateUser()));
+//    connect(deleteUserButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteUser(   )));
+
 }
 
 MainWindow::~MainWindow()
@@ -278,6 +282,9 @@ QLayout *MainWindow::createViewTheme()
     updateThemeButton = new QPushButton("Modifier");
     deleteThemeButton = new QPushButton ("Supprimer");
 
+    populateDropdownTheme();
+
+
     qboxLayout1->addWidget(textTheme);
     qboxLayout1->addWidget(dropdownTheme);
 
@@ -376,27 +383,46 @@ QLayout *MainWindow::createViewLogout()
     return qboxLayout2;
 }
 
+void MainWindow::populateDropdownTheme()
+{
+//    model->requestTheme(2, "", 0);
+//    sql::ResultSet *result = model->result;
+//    qDebug() << result->getString(2).c_str();
+//    while(result->next())
+//    {
+//        dropdownTheme->addItem(tr(result->getString(2).c_str()), QVariant(result->getInt(1)));
+//        result->next();
+//    }
+
+    dropdownTheme->addItem(tr("rfg1"), QVariant(25741));
+    dropdownTheme->addItem(tr("rfg2"), QVariant(258157492));
+    dropdownTheme->addItem(tr("rfg3"), QVariant(38));
+
+
+}
+
 void MainWindow::slotLogin()
 {
-    Model *model = new Model();
 
-    QString pseudo = loginInput->text();
-    QString password = passwordInput->text();
-    QString ip = ipDatabaseInput->text();
-    QString passwordDb = passwordDatabaseInput->text();
+//    QString pseudo = loginInput->text();
+//    QString password = passwordInput->text();
+//    QString ip = ipDatabaseInput->text();
+//    QString passwordDb = passwordDatabaseInput->text();
 
-    bool auth = model->authentificationUser(pseudo, password, passwordDb, ip);
+//    bool auth = model->authentificationUser(pseudo, password, passwordDb, ip);
 
-    if(auth == 1)
-    {
-        onglets->setVisible(true);
+//    if(auth == 1)
+//    {
+//        onglets->setVisible(true);
 
-    }
+//    }
 
-    else
-    {
-        QMessageBox::information(this, "ERREUR", "Vous n'avez pas reussi a vous connecter, l'un des champs saisis est faux");
-    }
+//    else
+//    {
+//        QMessageBox::information(this, "ERREUR", "Vous n'avez pas reussi a vous connecter, l'un des champs saisis est faux");
+//    }
+
+    onglets->setVisible(true);
 }
 
 void MainWindow::slotLogout()
@@ -405,4 +431,45 @@ void MainWindow::slotLogout()
     loginInput->clear();
     passwordInput->clear();
     passwordDatabaseInput->clear();
+}
+
+void MainWindow::slotAddTheme()
+{
+    QString theme = inputTheme->text();
+
+    QMessageBox::StandardButton reponse;
+    reponse = QMessageBox::question(this, "Ajout d'un theme", "Voulez-vous ajouter le theme "+ theme +" ?", QMessageBox::Yes|QMessageBox::No);
+
+    if(reponse ==  QMessageBox::Yes)
+    {
+        model->requestTheme(1, theme, 0);
+    }
+    else {
+        inputTheme->clear();
+    }
+}
+
+void MainWindow::slotUpdateTheme()
+{
+    QString theme = inputTheme->text();
+//    int id = inputTheme;
+}
+
+void MainWindow::slotDeleteTheme()
+{
+    QString theme = inputTheme->text();
+    int id = dropdownTheme->itemData(dropdownTheme->currentIndex()).toInt();
+    qDebug() << "id" << id;
+
+    QMessageBox::StandardButton reponse;
+    reponse = QMessageBox::question(this, "Suppression d'un theme", "Voulez-vous supprimer le theme "+ theme +" ainsi que les questions et propositions qui en depandent?", QMessageBox::Yes|QMessageBox::No);
+
+//    if(reponse ==  QMessageBox::Yes)
+//    {
+//        model->requestTheme(5, theme, id);
+//    }
+//    else {
+//        inputTheme->clear();
+//    }
+
 }

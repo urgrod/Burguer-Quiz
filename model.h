@@ -25,11 +25,15 @@ public:
 
     bool authentificationUser(QString pseudo, QString password, QString passwordDatabase, QString ip);
 
+
+
 private:
     sql::Driver *driver;
     sql::Connection *connection;
     sql::PreparedStatement *statement;
     sql::ResultSet *result;
+
+
 };
 
 #endif // MODEL_H

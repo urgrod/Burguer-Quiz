@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <model.h>
+
 #include <QMainWindow>
 #include <QWidget>
 #include <QHBoxLayout>
@@ -23,6 +25,7 @@
 #include <QApplication>
 #include <QMessageBox>
 
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -40,9 +43,12 @@ public:
      QLayout *createViewUser();
      QLayout *createViewLogout();
 
+     void populateDropdownTheme();
+
 private:
 
      QWidget *widgetGeneral;
+     Model *model;
 
      //menu
      QTabWidget *onglets;
@@ -133,6 +139,10 @@ private:
 public slots:
      void slotLogin();
      void slotLogout();
+
+     void slotAddTheme();
+     void slotUpdateTheme();
+     void slotDeleteTheme();
 
 };
 
