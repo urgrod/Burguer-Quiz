@@ -132,6 +132,7 @@ private:
 
 public slots:
      void slotLogin();
+     void slotLogout();
 
 };
 

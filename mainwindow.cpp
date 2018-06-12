@@ -4,9 +4,6 @@
 
 MainWindow::MainWindow() : QMainWindow()
 {
-    Controller *control = new Controller();
-    Model *model = new Model();
-
     this->setWindowTitle("Burger Quiz - Administration");
     this->resize(465,300);
 
@@ -52,6 +49,8 @@ MainWindow::MainWindow() : QMainWindow()
 
     connect(quitButton, SIGNAL(clicked()), QApplication::instance(), SLOT(quit()));
     connect(loginButton, SIGNAL(clicked(bool)), this, SLOT(slotLogin()));
+    connect(logoutButton, SIGNAL(clicked(bool)), this, SLOT(slotLogout()));
+
 
 //    connect(addPropositionButton, SIGNAL(clicked()), control, SLOT(slotCreateProposition()));
 //    connect(updatePropositionButton, SIGNAL(clicked()), control, SLOT(slotUpdateProposition()));
@@ -84,6 +83,8 @@ QLayout *MainWindow::createViewLogin()
 
     QVBoxLayout *qboxLayout4 = new QVBoxLayout;
 
+    QString ip = "127.0.0.1";
+
 
 
     loginInput = new QLineEdit;
@@ -91,6 +92,10 @@ QLayout *MainWindow::createViewLogin()
     passwordDatabaseInput = new QLineEdit;
     ipDatabaseInput = new QLineEdit;
     loginButton = new QPushButton("Se connecter");
+
+    ipDatabaseInput->setText(ip);
+    passwordDatabaseInput->setEchoMode(QLineEdit::Password);
+    passwordInput->setEchoMode(QLineEdit::Password);
 
     loginText = new QLabel("Login:");
     passwordText = new QLabel("Mot de passe:");
@@ -392,4 +397,12 @@ void MainWindow::slotLogin()
     {
         QMessageBox::information(this, "ERREUR", "Vous n'avez pas reussi a vous connecter, l'un des champs saisis est faux");
     }
+}
+
+void MainWindow::slotLogout()
+{
+    onglets->setVisible(false);
+    loginInput->clear();
+    passwordInput->clear();
+    passwordDatabaseInput->clear();
 }
