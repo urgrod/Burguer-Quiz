@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QAction>
+#include <model.h>
 
 class Controller
 {

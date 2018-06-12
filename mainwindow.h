@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <model.h>
+#include <controller.h>
 
 #include <QMainWindow>
 #include <QWidget>
@@ -49,6 +50,7 @@ private:
 
      QWidget *widgetGeneral;
      Model *model;
+     Controller *control;
 
      //menu
      QTabWidget *onglets;
@@ -115,6 +117,7 @@ private:
      QPushButton *addThemeButton;
      QPushButton *updateThemeButton;
      QPushButton *deleteThemeButton;
+     QPushButton *selectThemeButton;
 
      //interface user
      QComboBox *dropdownUser;
@@ -143,6 +146,7 @@ public slots:
      void slotAddTheme();
      void slotUpdateTheme();
      void slotDeleteTheme();
+     void slotSelectTheme();
 
 };
 

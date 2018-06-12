@@ -5,6 +5,7 @@ Controller::Controller()
 
 }
 
+
 bool Controller::getAuth()
 {
     return auth;

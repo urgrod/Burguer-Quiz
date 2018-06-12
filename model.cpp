@@ -21,7 +21,7 @@ void Model::connectToDatabase(QString password, QString ip)
         line << flux.readLine();
     }
 
-    driver =get_driver_instance();
+    driver = get_driver_instance();
     connection = driver->connect(("tcp://" + ip.toStdString() + ":3306"), line[1].toStdString(), password.toStdString());
 
     if(connection)

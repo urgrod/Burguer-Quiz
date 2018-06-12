@@ -6,6 +6,7 @@ MainWindow::MainWindow() : QMainWindow()
 {
 
     model = new Model();
+    control = new Controller();
 
     this->setWindowTitle("Burger Quiz - Administration");
     this->resize(465,300);
@@ -57,6 +58,7 @@ MainWindow::MainWindow() : QMainWindow()
     connect(addThemeButton, SIGNAL(clicked(bool)), this, SLOT(slotAddTheme()));
     connect(updateThemeButton, SIGNAL(clicked(bool)), this, SLOT(slotUpdateTheme()));
     connect(deleteThemeButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteTheme()));
+    connect(selectThemeButton, SIGNAL(clicked(bool)), this, SLOT(slotSelectTheme()));
 
 
 //    connect(addPropositionButton, SIGNAL(clicked()), this, SLOT(slotCreateProposition()));
@@ -281,12 +283,14 @@ QLayout *MainWindow::createViewTheme()
     addThemeButton = new QPushButton("Ajouter");
     updateThemeButton = new QPushButton("Modifier");
     deleteThemeButton = new QPushButton ("Supprimer");
+    selectThemeButton = new QPushButton("Selectionner");
 
     populateDropdownTheme();
 
 
     qboxLayout1->addWidget(textTheme);
     qboxLayout1->addWidget(dropdownTheme);
+    qboxLayout1->addWidget(selectThemeButton);
 
     qboxLayout2->addWidget(inputTheme);
 
@@ -472,4 +476,13 @@ void MainWindow::slotDeleteTheme()
 //        inputTheme->clear();
 //    }
 
+}
+
+void MainWindow::slotSelectTheme()
+{
+    /*
+     * recup de l'id select
+     * demande de l'info de l'id en base
+     * affichage de la requete dans les champs
+    */
 }
