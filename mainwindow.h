@@ -21,6 +21,7 @@
 #include <QTabWidget>
 #include <QAction>
 #include <QApplication>
+#include <QMessageBox>
 
 class MainWindow : public QMainWindow
 {
@@ -130,6 +131,7 @@ private:
      QPushButton *quitButton;
 
 public slots:
+     void slotLogin();
 
 };
 

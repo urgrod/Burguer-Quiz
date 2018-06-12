@@ -325,13 +325,6 @@ bool Model::authentificationUser(QString pseudo, QString password, QString passw
     QTextStream flux(&file);
     QStringList line;
 
-    connectToDatabase(password, ip);
-
-    requestUser(3, pseudo, password, pseudo, pseudo, pseudo, pseudo, pseudo);
-    result->next();
-    qDebug() << "result pseudo" << result->getString(1).c_str();
-
-
     while(!flux.atEnd())
     {
         line << flux.readLine();
@@ -340,18 +333,16 @@ bool Model::authentificationUser(QString pseudo, QString password, QString passw
 
     if(line[2] == hashDatabase)
     {
-//        model->connectToDatabase(password, ip);
+        connectToDatabase(password, ip);
 
-//        model->requestUser(3, pseudo, password, pseudo, pseudo, pseudo, pseudo, pseudo);
+        requestUser(3, pseudo, password, pseudo, pseudo, pseudo, pseudo, pseudo);
 
+        result->next();
 
-        if(hashDatabase == line[2] /*+ conditions liees au retour de la requete*/)
+        if(hashDatabase == line[2] && pseudo.toStdString() == result->getString(1).c_str() && hash.toStdString() == result->getString(2).c_str() && result->getInt(6) == 1)
         {
             control->setAuth(1);
             qDebug() << "[INFO] Authentification reussie, login: " << pseudo;
-//            qDebug() << "result pseudo" << result->getString(7).c_str();
-
-
             //affichage de la vue d'administration
 
             return 1;

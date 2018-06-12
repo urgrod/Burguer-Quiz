@@ -17,10 +17,12 @@ class Model:public QObject
 public:
     Model();
     void connectToDatabase(QString password, QString ip);
+
     void requestUser(int requestType, QString pseudo, QString password, QString mail, QString name, QString lastname, QString vip, QString avatar);
     void requestTheme(int requestType, QString nom, int id);
     void requestQuestions(int requestType, QString libelle2, QString libelle1, int idTheme, int idQuestion);
     void requestPropositions(int requestType, int idPropositions, QString proposition, QString reponseQuestion, int idQuestion);
+
     bool authentificationUser(QString pseudo, QString password, QString passwordDatabase, QString ip);
 
 private:

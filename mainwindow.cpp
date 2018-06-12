@@ -17,7 +17,6 @@ MainWindow::MainWindow() : QMainWindow()
     widgetGeneral->setLayout(qblGeneral);
     this->setCentralWidget(widgetGeneral);
 
-    //test
     onglets = new QTabWidget(this);
     onglets->setGeometry(0,0,465,300);
 
@@ -47,7 +46,12 @@ MainWindow::MainWindow() : QMainWindow()
     onglets->addTab(pageUser, "Utilisateur");
     onglets->addTab(pageLogout, "Quitter");
 
+    onglets->setVisible(false);
+
+    qblGeneral->addLayout(createViewLogin());
+
     connect(quitButton, SIGNAL(clicked()), QApplication::instance(), SLOT(quit()));
+    connect(loginButton, SIGNAL(clicked(bool)), this, SLOT(slotLogin()));
 
 //    connect(addPropositionButton, SIGNAL(clicked()), control, SLOT(slotCreateProposition()));
 //    connect(updatePropositionButton, SIGNAL(clicked()), control, SLOT(slotUpdateProposition()));
@@ -365,4 +369,27 @@ QLayout *MainWindow::createViewLogout()
     qboxLayout2->addLayout(qboxLayout1);
 
     return qboxLayout2;
+}
+
+void MainWindow::slotLogin()
+{
+    Model *model = new Model();
+
+    QString pseudo = loginInput->text();
+    QString password = passwordInput->text();
+    QString ip = ipDatabaseInput->text();
+    QString passwordDb = passwordDatabaseInput->text();
+
+    bool auth = model->authentificationUser(pseudo, password, passwordDb, ip);
+
+    if(auth == 1)
+    {
+        onglets->setVisible(true);
+
+    }
+
+    else
+    {
+        QMessageBox::information(this, "ERREUR", "Vous n'avez pas reussi a vous connecter, l'un des champs saisis est faux");
+    }
 }
