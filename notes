@@ -1,13 +1,25 @@
-variable qui contient un entier pour la vue
-boolen qui va dire si la personne est authentifiee
-appel d'une fonction qui va afficher telle ou telle vue suivant la valeur de l'entier et du boolen
-
-qblGeneral va prendre en parametre la vue qu'il faut afficher
 
 
-slot qui affiche le vue
--> soit direct dans le connect
--> soit le slot return QGroupBox qui retourne dans le controller
+verification des champs si ils sont pas vide ou tentative d'injection SQL
+	--> methode commune avec le QString qui est envoye 
+		--> return un bool
 
-hash du mdp de la db dans le fichier
-	-> comparaison du hash du mdp saisi avec le hash du fichier
+if(return function db ==1){
+	QMessageBox --> ajout en base
+	on efface les champs
+}
+else{
+	QMessageBox --> non ajoute en base
+	on laise les champs remplis
+}
+
+
+
+
+reponse quesiton:
+	si libelle 1 ok
+		--> reponse = 1
+	si libelle 2 ok
+		--> reponse = 2
+	si les2 ok
+		--> reponse = 3

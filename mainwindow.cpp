@@ -9,7 +9,7 @@ MainWindow::MainWindow() : QMainWindow()
     control = new Controller();
 
     this->setWindowTitle("Burger Quiz - Administration");
-    this->resize(465,300);
+    this->resize(900,300);
 
     widgetGeneral = new QWidget;
     QHBoxLayout *qblGeneral = new QHBoxLayout;
@@ -19,7 +19,7 @@ MainWindow::MainWindow() : QMainWindow()
     this->setCentralWidget(widgetGeneral);
 
     onglets = new QTabWidget(this);
-    onglets->setGeometry(0,0,465,300);
+    onglets->setGeometry(0,0,900,300);
 
     pageAccueil = new QWidget;
     pageAccueil->setLayout(createViewHome());
@@ -60,18 +60,21 @@ MainWindow::MainWindow() : QMainWindow()
     connect(deleteThemeButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteTheme()));
     connect(selectThemeButton, SIGNAL(clicked(bool)), this, SLOT(slotSelectTheme()));
 
+    connect(addQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotAddQuestion()));
+    connect(updateQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotUpdateQuestion()));
+    connect(deleteQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteQuestion()));
+    connect(selectQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotSelectTheme()));
 
-//    connect(addPropositionButton, SIGNAL(clicked()), this, SLOT(slotCreateProposition()));
-//    connect(updatePropositionButton, SIGNAL(clicked()), this, SLOT(slotUpdateProposition()));
-//    connect(deletePropositionButton, SIGNAL(clicked()), this, SLOT(slotDeleteProposition()));
+    connect(addPropositionButton, SIGNAL(clicked()), this, SLOT(slotAddProposition()));
+    connect(updatePropositionButton, SIGNAL(clicked()), this, SLOT(slotUpdateProposition()));
+    connect(deletePropositionButton, SIGNAL(clicked()), this, SLOT(slotDeleteProposition()));
+    connect(selectPropositionButton, SIGNAL(clicked(bool)), this, SLOT(slotSelectProposition()));
 
-//    connect(addQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotCreateQuestion()));
-//    connect(updateQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotUpdateQuestion()));
-//    connect(deleteQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteQuestion()));
 
-//    connect(addUserButton, SIGNAL(clicked(bool)), this, SLOT(slotCreateUser()));
-//    connect(updateUserButton, SIGNAL(clicked(bool)), this, SLOT(slotUpdateUser()));
-//    connect(deleteUserButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteUser(   )));
+    connect(addUserButton, SIGNAL(clicked(bool)), this, SLOT(slotAddUser()));
+    connect(updateUserButton, SIGNAL(clicked(bool)), this, SLOT(slotUpdateUser()));
+    connect(deleteUserButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteUser()));
+    connect(selectUserButton, SIGNAL(clicked(bool)), this, SLOT(slotSelectUser()));
 
 }
 
@@ -156,6 +159,8 @@ QLayout *MainWindow::createViewProposition()
     QHBoxLayout *qboxLayout7 = new QHBoxLayout;
     QHBoxLayout *qboxLayout8 = new QHBoxLayout;
     QHBoxLayout *qboxLayout9 = new QHBoxLayout;
+    QHBoxLayout *qboxLayout10 = new QHBoxLayout;
+
 
 
 
@@ -164,7 +169,7 @@ QLayout *MainWindow::createViewProposition()
 
     dropdownQuestion = new QComboBox;
     dropdownTheme = new QComboBox;
-    dropdownNbProposition = new QSpinBox;
+    dropdownProposition = new QComboBox;
     addPropositionLabel = new QLabel("Ajouter des propositions");
     addProposition1 = new QLineEdit;
     addProposition2 = new QLineEdit;
@@ -182,12 +187,15 @@ QLayout *MainWindow::createViewProposition()
     addPropositionButton = new QPushButton("Ajouter");
     updatePropositionButton = new QPushButton("Modifier");
     deletePropositionButton = new QPushButton("Supprimer");
+    selectPropositionButton = new QPushButton("selectionner la proposition");
 
 
     qboxLayout9->addWidget(addPropositionLabel);
-    qboxLayout9->addWidget(dropdownNbProposition);
-    qboxLayout1->addWidget(dropdownQuestion);
-    qboxLayout1->addWidget(dropdownTheme);
+    qboxLayout9->addWidget(dropdownProposition);
+
+//    qboxLayout1->addWidget(dropdownQuestion);
+//    qboxLayout1->addWidget(dropdownTheme);
+
     qboxLayout2->addWidget(addProposition1);
     qboxLayout2->addWidget(addProposition2);
     qboxLayout2->addWidget(addProposition3);
@@ -209,8 +217,13 @@ QLayout *MainWindow::createViewProposition()
     qboxLayout7->addWidget(answerRadio6);
     qboxLayout7->addWidget(answerRadio9);
 
+    qboxLayout10->addWidget(selectPropositionButton);
+
+
+
     qboxLayout5->addLayout(qboxLayout9);
     qboxLayout5->addLayout(qboxLayout1);
+    qboxLayout5->addLayout(qboxLayout10);
     qboxLayout5->addLayout(qboxLayout2);
     qboxLayout5->addLayout(qboxLayout8);
     qboxLayout5->addLayout(qboxLayout4);
@@ -227,6 +240,7 @@ QLayout *MainWindow::createViewQuestion()
     QHBoxLayout *qboxLayout2 = new QHBoxLayout;
     QHBoxLayout *qboxLayout3 = new QHBoxLayout;
     QHBoxLayout *qboxLayout4 = new QHBoxLayout;
+    QHBoxLayout *qboxLayout6 = new QHBoxLayout;
 
     QVBoxLayout *qboxLayout5 = new QVBoxLayout;
 
@@ -237,13 +251,15 @@ QLayout *MainWindow::createViewQuestion()
     addQuestion2 = new QLineEdit;
     textLabel2 = new QLabel("ou les deux?");
     textLabel3 =new QLabel("Choisir un theme:");
-    dropdownThemeProposition = new QComboBox;
     addQuestionButton = new QPushButton("Ajouter");
     updateQuestionButton = new QPushButton("Modifier");
     deleteQuestionButton = new QPushButton("Supprimer");
+    selectQuestionButton = new QPushButton("Selectionner la question");
 
-    qboxLayout1->addWidget(dropdownThemeProposition);
+//    qboxLayout1->addWidget(dropdownTheme);
     qboxLayout1->addWidget(dropdownQuestion);
+
+    qboxLayout6->addWidget(selectQuestionButton);
 
 
     qboxLayout2->addWidget(addQuestion1);
@@ -251,13 +267,14 @@ QLayout *MainWindow::createViewQuestion()
     qboxLayout2->addWidget(addQuestion2);
     qboxLayout2->addWidget(textLabel2);
 
-    qboxLayout3->addWidget(textLabel3);
+//    qboxLayout3->addWidget(textLabel3);
 
     qboxLayout4->addWidget(addQuestionButton);
     qboxLayout4->addWidget(updateQuestionButton);
     qboxLayout4->addWidget(deleteQuestionButton);
 
     qboxLayout5->addLayout(qboxLayout1);
+    qboxLayout5->addLayout(qboxLayout6);
     qboxLayout5->addLayout(qboxLayout2);
     qboxLayout5->addLayout(qboxLayout3);
     qboxLayout5->addLayout(qboxLayout4);
@@ -329,23 +346,43 @@ QLayout *MainWindow::createViewUser()
     inputPasswordUser = new QLineEdit;
     inputPasswordVerifUser = new QLineEdit;
     textUser = new QLabel("Droit d'administration?");
-    adminNoRadio = new QRadioButton("Oui");
-    adminYesRadio = new QRadioButton("Non");
+    adminNoRadio = new QRadioButton("Non");
+    adminYesRadio = new QRadioButton("Oui");
     addUserButton = new QPushButton("Ajouter");
     updateUserButton = new QPushButton("Modifier");
     deleteUserButton = new QPushButton("Supprimer");
+    selectUserButton = new QPushButton("Selectionner");
+    textUser1 = new QLabel("Pseudo:");
+    textUser2 = new QLabel("Prenom:");
+    textUser3 = new QLabel("Nom:");
+    textUser4 = new QLabel("Mail:");
+    textUser5 = new QLabel("Avatar:");
+    textUser6 = new QLabel("Mot de passe:");
+    textUser7 = new QLabel("Confirmation:");
+
+
+    inputPasswordUser->setEchoMode(QLineEdit::Password);
+    inputPasswordVerifUser->setEchoMode(QLineEdit::Password);
 
     qboxLayout1->addWidget(dropdownUser);
+    qboxLayout1->addWidget(selectUserButton);
 
+    qboxLayout2->addWidget(textUser1);
     qboxLayout2->addWidget(inputPseudo);
 
+    qboxLayout3->addWidget(textUser2);
     qboxLayout3->addWidget(inputName);
+    qboxLayout3->addWidget(textUser3);
     qboxLayout3->addWidget(inputFirstname);
 
+    qboxLayout4->addWidget(textUser4);
     qboxLayout4->addWidget(inputMail);
+    qboxLayout4->addWidget(textUser5);
     qboxLayout4->addWidget(inputAvatar);
 
+    qboxLayout5->addWidget(textUser6);
     qboxLayout5->addWidget(inputPasswordUser);
+    qboxLayout5->addWidget(textUser7);
     qboxLayout5->addWidget(inputPasswordVerifUser);
 
     qboxLayout6->addWidget(textUser);
@@ -418,6 +455,7 @@ void MainWindow::slotLogin()
 //    if(auth == 1)
 //    {
 //        onglets->setVisible(true);
+//        widgetGeneral->setVisible(false);
 
 //    }
 
@@ -427,6 +465,7 @@ void MainWindow::slotLogin()
 //    }
 
     onglets->setVisible(true);
+    widgetGeneral->setVisible(false);
 }
 
 void MainWindow::slotLogout()
@@ -435,20 +474,34 @@ void MainWindow::slotLogout()
     loginInput->clear();
     passwordInput->clear();
     passwordDatabaseInput->clear();
+    widgetGeneral->setVisible(true);
 }
 
 void MainWindow::slotAddTheme()
 {
     QString theme = inputTheme->text();
+    int id = dropdownTheme->itemData(dropdownTheme->currentIndex()).toInt();
+    qDebug() << "id" << id;
 
     QMessageBox::StandardButton reponse;
-    reponse = QMessageBox::question(this, "Ajout d'un theme", "Voulez-vous ajouter le theme "+ theme +" ?", QMessageBox::Yes|QMessageBox::No);
+    reponse = QMessageBox::question(this, "Ajout d'un theme", "Voulez-vous mettre a jour le theme "+ theme +"?", QMessageBox::Yes|QMessageBox::No);
 
-    if(reponse ==  QMessageBox::Yes)
+    if(reponse ==  QMessageBox::Yes && model->verificationData(theme))
     {
-        model->requestTheme(1, theme, 0);
+        model->requestTheme(1, theme,id);\
+
+        if(model->getRequestEffect())
+        {
+            reponse = QMessageBox::question(this, "Ajout d'un theme", "Le theme "+theme +" a ete ajoute dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+        else {
+            reponse = QMessageBox::question(this, "[ERREUR] Ajout d'un theme", "Le theme "+theme +" n'a pas ete ajoute dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
     }
     else {
+
+        reponse = QMessageBox::question(this, "[ERREUR] Ajout d'un theme", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
+
         inputTheme->clear();
     }
 }
@@ -456,7 +509,30 @@ void MainWindow::slotAddTheme()
 void MainWindow::slotUpdateTheme()
 {
     QString theme = inputTheme->text();
-//    int id = inputTheme;
+    int id = dropdownTheme->itemData(dropdownTheme->currentIndex()).toInt();
+    qDebug() << "id" << id;
+
+    QMessageBox::StandardButton reponse;
+    reponse = QMessageBox::question(this, "Mise a jour d'un theme", "Voulez-vous mettre a jour le theme "+ theme +"?", QMessageBox::Yes|QMessageBox::No);
+
+    if(reponse ==  QMessageBox::Yes && model->verificationData(theme))
+    {
+        model->requestTheme(4, theme,id);\
+
+        if(model->getRequestEffect())
+        {
+            reponse = QMessageBox::question(this, "Mise a jour d'un theme", "Le theme "+theme +" a ete mis a jour dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+        else {
+            reponse = QMessageBox::question(this, "[ERREUR] Mise a jour d'un theme", "Le theme "+theme +" n'a pas ete mis a jour dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+    }
+    else {
+
+        reponse = QMessageBox::question(this, "[ERREUR] Mise a jour d'un theme", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
+
+        inputTheme->clear();
+    }
 }
 
 void MainWindow::slotDeleteTheme()
@@ -468,13 +544,25 @@ void MainWindow::slotDeleteTheme()
     QMessageBox::StandardButton reponse;
     reponse = QMessageBox::question(this, "Suppression d'un theme", "Voulez-vous supprimer le theme "+ theme +" ainsi que les questions et propositions qui en depandent?", QMessageBox::Yes|QMessageBox::No);
 
-//    if(reponse ==  QMessageBox::Yes)
-//    {
-//        model->requestTheme(5, theme, id);
-//    }
-//    else {
-//        inputTheme->clear();
-//    }
+    if(reponse ==  QMessageBox::Yes && model->verificationData(theme))
+    {
+        model->requestTheme(5, theme,id);\
+
+        if(model->getRequestEffect())
+        {
+            reponse = QMessageBox::question(this, "Suppression d'un theme", "Le theme "+theme +" a ete supprime dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+        else {
+            reponse = QMessageBox::question(this, "[ERREUR] Suppression d'un theme", "Le theme "+theme +" n'a pas ete supprime dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+    }
+    else {
+
+        reponse = QMessageBox::question(this, "[ERREUR] Suppression d'un theme", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
+
+        inputTheme->clear();
+    }
+
 
 }
 
@@ -485,4 +573,379 @@ void MainWindow::slotSelectTheme()
      * demande de l'info de l'id en base
      * affichage de la requete dans les champs
     */
+}
+
+void MainWindow::slotAddQuestion()
+{
+
+    QString libelle1 = addQuestion1->text();
+    QString libelle2 = addQuestion2->text();
+    int idQuestion; /* = idQuestion selected*/
+    int idTheme; /* = idQuestion selected*/
+
+
+    QMessageBox::StandardButton reponse;
+    reponse = QMessageBox::question(this, "Ajout d'une question", "Voulez-vous ajouter la question"+ libelle1 +", "+ libelle2 + "?", QMessageBox::Yes|QMessageBox::No);
+
+    if(reponse ==  QMessageBox::Yes && model->verificationData(libelle1) && model->verificationData(libelle1))
+    {
+        model->requestQuestions(1, libelle1, libelle2,idTheme ,idQuestion);\
+
+        if(model->getRequestEffect())
+        {
+            reponse = QMessageBox::question(this, "Ajout d'une question", "La question"+libelle1 +","+libelle2 +" a ete ajoutee dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+        else {
+            reponse = QMessageBox::question(this, "[ERREUR] Ajout d'une question", "La question"+libelle1 +","+libelle1 +" n'a pas ete ajoutee dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+    }
+    else {
+
+        reponse = QMessageBox::question(this, "[ERREUR] Ajout d'une question", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
+
+        addQuestion1->clear();
+        addQuestion2->clear();
+    }
+
+}
+
+void MainWindow::slotUpdateQuestion()
+{
+    QString libelle1 = addQuestion1->text();
+    QString libelle2 = addQuestion2->text();
+    int idQuestion; /* = idQuestion selected*/
+    int idTheme; /* = idQuestion selected*/
+
+
+    QMessageBox::StandardButton reponse;
+    reponse = QMessageBox::question(this, "Mise a jour d'une question", "Voulez-vous mettre a jour la question"+ libelle1 +", "+ libelle2 + "?", QMessageBox::Yes|QMessageBox::No);
+
+    if(reponse ==  QMessageBox::Yes && model->verificationData(libelle1) && model->verificationData(libelle1))
+    {
+        model->requestQuestions(4, libelle1, libelle2,idTheme ,idQuestion);\
+
+        if(model->getRequestEffect())
+        {
+            reponse = QMessageBox::question(this, "Mise a jour d'une question", "La question"+libelle1 +","+libelle2 +" a ete mise a jour dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+        else {
+            reponse = QMessageBox::question(this, "[ERREUR] Mise a jour d'une question", "La question"+libelle1 +","+libelle1 +" n'a pas ete mise a jour dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+    }
+    else {
+
+        reponse = QMessageBox::question(this, "[ERREUR] Mise a jour d'une question", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
+
+        addQuestion1->clear();
+        addQuestion2->clear();
+    }
+
+}
+
+void MainWindow::slotDeleteQuestion()
+{
+    QString libelle1 = addQuestion1->text();
+    QString libelle2 = addQuestion2->text();
+    int idQuestion; /* = idQuestion selected*/
+    int idTheme; /* = idQuestion selected*/
+
+
+    QMessageBox::StandardButton reponse;
+    reponse = QMessageBox::question(this, "Suppression d'une question", "Voulez-vous supprimer la question"+ libelle1 +", "+ libelle2 + "ainsi que les propositions qui en depandent?", QMessageBox::Yes|QMessageBox::No);
+
+    if(reponse ==  QMessageBox::Yes && model->verificationData(libelle1) && model->verificationData(libelle1))
+    {
+        model->requestQuestions(5, libelle1, libelle2,idTheme ,idQuestion);\
+
+        if(model->getRequestEffect())
+        {
+            reponse = QMessageBox::question(this, "Suppression d'une question", "La question"+libelle1 +","+libelle2 +" a ete supprime dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+        else {
+            reponse = QMessageBox::question(this, "[ERREUR] Suppression d'une question", "La question"+libelle1 +","+libelle1 +" n'a pas ete supprime dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+    }
+    else {
+
+        reponse = QMessageBox::question(this, "[ERREUR] Suppression d'une question", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
+
+        addQuestion1->clear();
+        addQuestion2->clear();
+    }
+}
+
+void MainWindow::slotSelectQuestion()
+{
+    /*
+     * recup de l'id select
+     * demande de l'info de l'id en base
+     * affichage de la requete dans les champs
+    */
+
+}
+
+void MainWindow::slotAddProposition()
+{
+
+    QString proposition1 = addProposition1->text();
+    QString proposition2 = addProposition2->text();
+    QString proposition3 = addProposition3->text();
+    int reponseProposition1;
+    int reponseProposition2;
+    int reponseProposition3;
+    int idQuestion;
+    int idProposition;
+
+    QMessageBox::StandardButton reponse;
+    reponse = QMessageBox::question(this, "Ajout d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" vont etre supprimes de la base", QMessageBox::Yes|QMessageBox::No);
+
+    if(reponse ==  QMessageBox::Yes && model->verificationData(proposition1) && model->verificationData(proposition2) && model->verificationData(proposition3))
+    {
+        model->requestPropositions(5, idProposition, proposition1, reponseProposition1, idQuestion);\
+        model->requestPropositions(5, idProposition, proposition2, reponseProposition2, idQuestion);
+        model->requestPropositions(5, idProposition, proposition3, reponseProposition3, idQuestion);
+
+        if(model->getRequestEffect())
+        {
+            reponse = QMessageBox::question(this, "Ajout d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" a ete ajoute dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+        else {
+            reponse = QMessageBox::question(this, "[ERREUR] Ajout d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" n'ont pas ete ajoute dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+    }
+    else {
+
+        reponse = QMessageBox::question(this, "[ERREUR] Ajout d'une proposition", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
+
+        inputPseudo->clear();
+        inputName->clear();
+        inputFirstname->clear();
+        inputPasswordUser->clear();
+        inputPasswordVerifUser->clear();
+    }
+}
+
+void MainWindow::slotUpdateProposition()
+{
+
+    QString proposition1 = addProposition1->text();
+    QString proposition2 = addProposition2->text();
+    QString proposition3 = addProposition3->text();
+    int reponseProposition1;
+    int reponseProposition2;
+    int reponseProposition3;
+    int idQuestion;
+    int idProposition;
+
+    QMessageBox::StandardButton reponse;
+    reponse = QMessageBox::question(this, "Mise a jour d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" vont etre supprimes de la base", QMessageBox::Yes|QMessageBox::No);
+
+    if(reponse ==  QMessageBox::Yes && model->verificationData(proposition1) && model->verificationData(proposition2) && model->verificationData(proposition3))
+    {
+        model->requestPropositions(5, idProposition, proposition1, reponseProposition1, idQuestion);\
+        model->requestPropositions(5, idProposition, proposition2, reponseProposition2, idQuestion);
+        model->requestPropositions(5, idProposition, proposition3, reponseProposition3, idQuestion);
+
+        if(model->getRequestEffect())
+        {
+            reponse = QMessageBox::question(this, "Mise a jour d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" ont ete mises a jour dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+        else {
+            reponse = QMessageBox::question(this, "[ERREUR] Mise a jour d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" n'ont pas ete mises a jour dans la base", QMessageBox::Yes|QMessageBox::No);
+        }
+    }
+    else {
+
+        reponse = QMessageBox::question(this, "[ERREUR] Mise a jour d'une proposition", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
+
+        inputPseudo->clear();
+        inputName->clear();
+        inputFirstname->clear();
+        inputPasswordUser->clear();
+        inputPasswordVerifUser->clear();
+
+
+    }
+
+
+}
+
+void MainWindow::slotDeleteProposition()
+{
+
+    QString proposition1 = addProposition1->text();
+    QString proposition2 = addProposition2->text();
+    QString proposition3 = addProposition3->text();
+    int reponseProposition1;
+    int reponseProposition2;
+    int reponseProposition3;
+    int idQuestion;
+    int idProposition;
+
+    QMessageBox::StandardButton reponse;
+    reponse = QMessageBox::question(this, "Suppression d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" vont etre supprimes de la base", QMessageBox::Yes|QMessageBox::No);
+
+    if(reponse ==  QMessageBox::Yes && model->verificationData(proposition1) && model->verificationData(proposition2) && model->verificationData(proposition3))
+    {
+        model->requestPropositions(5, idProposition, proposition1, reponseProposition1, idQuestion);\
+        model->requestPropositions(5, idProposition, proposition2, reponseProposition2, idQuestion);
+        model->requestPropositions(5, idProposition, proposition3, reponseProposition3, idQuestion);
+
+        if(model->getRequestEffect())
+        {
+            reponse = QMessageBox::question(this, "Suppression d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" ont ete supprimes de la base", QMessageBox::Yes|QMessageBox::No);
+        }
+        else {
+            reponse = QMessageBox::question(this, "[ERREUR] Suppression d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" n'ont pas ete supprimes de la base", QMessageBox::Yes|QMessageBox::No);
+        }
+    }
+    else {
+
+        reponse = QMessageBox::question(this, "[ERREUR] Suppression d'une proposition", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
+
+        inputPseudo->clear();
+        inputName->clear();
+        inputFirstname->clear();
+        inputPasswordUser->clear();
+        inputPasswordVerifUser->clear();
+
+
+    }
+}
+
+void MainWindow::slotSelectProposition()
+{
+
+    /*
+     * recup de l'id select
+     * demande de l'info de l'id en base
+     * affichage de la requete dans les champs
+    */
+
+}
+
+void MainWindow::slotAddUser()
+{
+
+    QString pseudo = inputPseudo->text();
+    QString name = inputName->text();
+    QString lastname = inputFirstname->text();
+    QString password = inputPasswordUser->text();
+    QString passwordVerif = inputPasswordVerifUser->text();
+    QString mail = inputMail->text();
+    QString avatar = inputAvatar->text();
+    bool yesVip = adminYesRadio->isChecked();
+
+    QMessageBox::StandardButton reponse;
+    reponse = QMessageBox::question(this, "Ajout d'un utilisateur", "L'utilisateur "+pseudo +" va etre ajoute a la base", QMessageBox::Yes|QMessageBox::No);
+
+    if(reponse ==  QMessageBox::Yes && password == passwordVerif && model->verificationData(pseudo) && model->verificationData(name) && model->verificationData(lastname) && model->verificationData(password) && model->verificationData(passwordVerif))
+    {
+        model->requestUser(1, pseudo, password, mail, name, lastname, yesVip, avatar);
+
+        if(model->getRequestEffect())
+        {
+            reponse = QMessageBox::question(this, "Ajout d'un utilisateur", "L'utilisateur "+pseudo +" a ete ajoute a la base", QMessageBox::Yes|QMessageBox::No);
+        }
+        else {
+            reponse = QMessageBox::question(this, "[ERREUR] Ajout d'un utilisateur", "L'utilisateur "+pseudo +" n'a pas ete ajoute a la base", QMessageBox::Yes|QMessageBox::No);
+        }
+    }
+    else {
+
+        reponse = QMessageBox::question(this, "[ERREUR] Ajout d'un utilisateur", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
+
+        inputPseudo->clear();
+        inputName->clear();
+        inputFirstname->clear();
+        inputPasswordUser->clear();
+        inputPasswordVerifUser->clear();
+
+    }
+
+}
+
+void MainWindow::slotUpdateUser()
+{
+    QString pseudo = inputPseudo->text();
+    QString name = inputName->text();
+    QString lastname = inputFirstname->text();
+    QString password = inputPasswordUser->text();
+    QString passwordVerif = inputPasswordVerifUser->text();
+    QString mail = inputMail->text();
+    QString avatar = inputAvatar->text();
+    bool yesVip = adminYesRadio->isChecked();
+
+    QMessageBox::StandardButton reponse;
+    reponse = QMessageBox::question(this, "Ajout d'un utilisateur", "L'utilisateur "+pseudo +" va etre ajoute a la base", QMessageBox::Yes|QMessageBox::No);
+
+    if(reponse ==  QMessageBox::Yes && password == passwordVerif && model->verificationData(pseudo) && model->verificationData(name) && model->verificationData(lastname) && model->verificationData(password) && model->verificationData(passwordVerif))
+    {
+        model->requestUser(1, pseudo, password, mail, name, lastname, yesVip, avatar);
+
+        if(model->getRequestEffect())
+        {
+            reponse = QMessageBox::question(this, "Ajout d'un utilisateur", "L'utilisateur "+pseudo +" a ete ajoute a la base", QMessageBox::Yes|QMessageBox::No);
+        }
+        else {
+            reponse = QMessageBox::question(this, "[ERREUR] Ajout d'un utilisateur", "L'utilisateur "+pseudo +" n'a pas ete ajoute a la base", QMessageBox::Yes|QMessageBox::No);
+        }
+    }
+    else {
+
+        reponse = QMessageBox::question(this, "[ERREUR] Ajout d'un utilisateur", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
+
+        inputPseudo->clear();
+        inputName->clear();
+        inputFirstname->clear();
+        inputPasswordUser->clear();
+        inputPasswordVerifUser->clear();
+
+    }
+
+}
+
+void MainWindow::slotDeleteUser()
+{
+
+    QString pseudo = inputPseudo->text();
+    QString name = inputName->text();
+    QString mail = inputMail->text();
+    QString lastname = inputFirstname->text();
+    QString password = inputPasswordUser->text();
+    QString passwordVerif = inputPasswordVerifUser->text();
+    QString avatar = inputAvatar->text();
+    bool yesVip = adminYesRadio->isChecked();
+
+    QMessageBox::StandardButton reponse;
+    reponse = QMessageBox::question(this, "Suppression d'un utilisateur", "L'utilisateur "+pseudo +" va etre supprime de la base", QMessageBox::Yes|QMessageBox::No);
+
+    if(reponse ==  QMessageBox::Yes && password == passwordVerif && model->verificationData(pseudo) && model->verificationData(name) && model->verificationData(lastname) && model->verificationData(password) && model->verificationData(passwordVerif))
+    {
+        model->requestUser(5, pseudo, password, mail, name, lastname, yesVip, avatar);
+
+        if(model->getRequestEffect())
+        {
+            reponse = QMessageBox::question(this, "Suppression d'un utilisateur", "L'utilisateur "+pseudo +" a ete supprime de la base", QMessageBox::Yes|QMessageBox::No);
+        }
+        else {
+            reponse = QMessageBox::question(this, "[ERREUR] Suppression d'un utilisateur", "L'utilisateur "+pseudo +" n'a pas ete supprime de la base", QMessageBox::Yes|QMessageBox::No);
+        }
+    }
+    else {
+
+        reponse = QMessageBox::question(this, "[ERREUR] Suppression d'un utilisateur", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
+
+        inputPseudo->clear();
+        inputName->clear();
+        inputFirstname->clear();
+        inputPasswordUser->clear();
+        inputPasswordVerifUser->clear();
+
+    }
+}
+
+void MainWindow::slotSelectUser()
+{
+
 }

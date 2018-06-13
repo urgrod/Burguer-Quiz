@@ -78,9 +78,7 @@ private:
      //interface d'accueil
 
      //interface proposition
-     QComboBox *dropdownQuestion;
-     QComboBox *dropdownThemeProposition;
-     QSpinBox *dropdownNbProposition;
+     QComboBox *dropdownProposition;
      QLineEdit *addProposition1;
      QLineEdit *addProposition2;
      QLineEdit *addProposition3;
@@ -96,10 +94,12 @@ private:
      QPushButton *addPropositionButton;
      QPushButton *updatePropositionButton;
      QPushButton *deletePropositionButton;
+     QPushButton *selectPropositionButton;
      QLabel *addPropositionLabel;
      QLabel *answerPropositionLabel;
 
      //interface question
+     QComboBox *dropdownQuestion;
      QLabel *choiceQuestionLabel;
      QLineEdit *addQuestion1;
      QLineEdit *addQuestion2;
@@ -109,6 +109,7 @@ private:
      QPushButton *addQuestionButton;
      QPushButton *updateQuestionButton;
      QPushButton *deleteQuestionButton;
+     QPushButton *selectQuestionButton;
 
      //interface theme
      QLabel *textTheme;
@@ -134,6 +135,15 @@ private:
      QPushButton *addUserButton;
      QPushButton *updateUserButton;
      QPushButton *deleteUserButton;
+     QPushButton *selectUserButton;
+     QLabel *textUser1;
+     QLabel *textUser2;
+     QLabel *textUser3;
+     QLabel *textUser4;
+     QLabel *textUser5;
+     QLabel *textUser6;
+     QLabel *textUser7;
+
 
      //interface logout
      QPushButton *logoutButton;
@@ -147,6 +157,22 @@ public slots:
      void slotUpdateTheme();
      void slotDeleteTheme();
      void slotSelectTheme();
+
+     void slotAddQuestion();
+     void slotUpdateQuestion();
+     void slotDeleteQuestion();
+     void slotSelectQuestion();
+
+     void slotAddProposition();
+     void slotUpdateProposition();
+     void slotDeleteProposition();
+     void slotSelectProposition();
+
+     void slotAddUser();
+     void slotUpdateUser();
+     void slotDeleteUser();
+     void slotSelectUser();
+
 
 };
 
