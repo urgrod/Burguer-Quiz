@@ -1,40 +1,6 @@
 
 
-verification des champs si ils sont pas vide ou tentative d'injection SQL
-	--> methode commune avec le QString qui est envoye 
-		--> return un bool
-
-if(return function db ==1){
-	QMessageBox --> ajout en base
-	on efface les champs
-}
-else{
-	QMessageBox --> non ajoute en base
-	on laise les champs remplis
-}
-
-
-
-
-reponse quesiton:
-	si libelle 1 ok
-		--> reponse = 1
-	si libelle 2 ok
-		--> reponse = 2
-	si les2 ok
-		--> reponse = 3
-
-
-a faire:
-
 page d'accueil
 appel de chaque populate a chaque requete
 
 
-ajout d'un champ invisible id a chaque page et on y rentre l'id dans ce fdp
-
-PROPOSITIONS:
-C -->manque l'id de la question
-R --> manque l'id de la question dans le menu deroulant
-U --> manque l'id de la question dans le menu deroulant
-D --> manque l'id de la question dans le menu deroulant

@@ -306,7 +306,7 @@ void Model::requestPropositions(int requestType, int idPropositions, QString pro
     if(requestType == 2)
     {
         //requete read all
-        statement = connection->prepareStatement("SELECT * FROM PROPOSITIONS");
+        statement = connection->prepareStatement("SELECT * FROM `PROPOSITIONS` ;");
 
         result = statement->executeQuery();
         setRequestEffect(result);
@@ -332,7 +332,7 @@ void Model::requestPropositions(int requestType, int idPropositions, QString pro
     if(requestType == 4)
     {
         //requete update
-        statement = connection->prepareStatement("UPDATE PROPOSITIONS SET proposition = ?, reponse_question = ?, WHERE propositions.id_proposition = ?;");
+        statement = connection->prepareStatement("UPDATE `PROPOSITIONS` SET `proposition` = ?, `reponse_question` = ? WHERE `PROPOSITIONS`.`id_propositions` = ?;");
 
         statement->setString(1,proposition.toStdString());
         statement->setInt(2, reponseQuestion);
@@ -348,7 +348,7 @@ void Model::requestPropositions(int requestType, int idPropositions, QString pro
     if(requestType == 5)
     {
         //requete delete
-        statement = connection->prepareStatement("DELETE FROM PROPOSITIONS WHERE propositions.id_question = ?;");
+        statement = connection->prepareStatement("DELETE FROM `PROPOSITIONS` WHERE `PROPOSITIONS`.`id_propositions` = ? ");
 
         statement->setInt(1, idQuestion);
 
@@ -442,4 +442,14 @@ int Model::verificationRadio(QRadioButton *radio1, QRadioButton *radio2, QRadioB
     if(radio1->isChecked()) return 1;
     if(radio2->isChecked()) return 2;
     if(radio3->isChecked()) return 3;
+}
+
+void Model::requestScore()
+{
+    statement = connection->prepareStatement("SELECT * FROM `SCORE` ");
+
+    result = statement->executeQuery();
+    setRequestEffect(result);
+    return;
+
 }

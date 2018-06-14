@@ -23,6 +23,7 @@ public:
     void requestTheme(int requestType, QString nom, int id);
     void requestQuestions(int requestType, QString libelle2, QString libelle1, int idTheme, int idQuestion);
     void requestPropositions(int requestType, int idPropositions, QString proposition, int reponseQuestion, int idQuestion);
+    void requestScore();
 
     bool authentificationUser(QString pseudo, QString password, QString passwordDatabase, QString ip);
     bool verificationData(QString data);

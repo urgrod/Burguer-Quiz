@@ -58,17 +58,14 @@ MainWindow::MainWindow() : QMainWindow()
     connect(addThemeButton, SIGNAL(clicked(bool)), this, SLOT(slotAddTheme()));
     connect(updateThemeButton, SIGNAL(clicked(bool)), this, SLOT(slotUpdateTheme()));
     connect(deleteThemeButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteTheme()));
-//    connect(selectThemeButton, SIGNAL(clicked(bool)), this, SLOT(slotSelectTheme()));
 
     connect(addQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotAddQuestion()));
     connect(updateQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotUpdateQuestion()));
     connect(deleteQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteQuestion()));
-//    connect(selectQuestionButton, SIGNAL(clicked(bool)), this, SLOT(slotSelectQuestion()));
 
     connect(addPropositionButton, SIGNAL(clicked()), this, SLOT(slotAddProposition()));
     connect(updatePropositionButton, SIGNAL(clicked()), this, SLOT(slotUpdateProposition()));
     connect(deletePropositionButton, SIGNAL(clicked()), this, SLOT(slotDeleteProposition()));
-//    connect(selectPropositionButton, SIGNAL(clicked(bool)), this, SLOT(slotSelectProposition()));
 
 
     connect(addUserButton, SIGNAL(clicked(bool)), this, SLOT(slotAddUser()));
@@ -76,18 +73,26 @@ MainWindow::MainWindow() : QMainWindow()
     connect(deleteUserButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteUser()));
     connect(selectUserButton, SIGNAL(clicked(bool)), this, SLOT(slotSelectUser()));
 
-    //test
     connect(tableTheme, SIGNAL(cellClicked(int,int)), this, SLOT(slotSelectTheme(int,int)));
     connect(tableQuestion, SIGNAL(cellClicked(int,int)), this, SLOT(slotSelectQuestion(int, int)));
     connect(tableProposition, SIGNAL(cellClicked(int,int)), this, SLOT(slotSelectProposition(int,int)));
 
     connect(tableThemeQuestion, SIGNAL(cellClicked(int,int)), this, SLOT(slotSelectTheme(int,int)));
-
+    connect(tableQuestionProposition, SIGNAL(cellClicked(int,int)), this, SLOT(slotSelectQuestion(int,int)));
 
     populateDropdownTheme();
     populateDropdownQuestion();
-    populateDropdownProposition();
     populateDropdownReponse();
+    populateDropdownProposition();
+    populateDropdownScore();
+    populateDropdownQuestion();
+    populateDropdownProposition();
+    populateDropdownTheme();
+    populateDropdownScore();
+
+
+
+
 //    populateDropdownUser();
 
 }
@@ -141,6 +146,7 @@ QLayout *MainWindow::createViewLogin()
     qboxLayout4->addLayout(qboxLayout3);
 
 
+    populateDropdownScore();
     return qboxLayout4;
 }
 
@@ -149,13 +155,10 @@ QLayout *MainWindow::createViewHome()
 
     QHBoxLayout *qboxLayout = new QHBoxLayout;
 
-    QLabel *text  = new QLabel("Tableau des scores a afficher");
+    tableScore = new QTableWidget;
+    tableScore->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    qboxLayout->addWidget(text);
-
-//    qgrouBox->setLayout(qboxLayout);
-
-//    return qgrouBox;
+    qboxLayout->addWidget(tableScore);
 
     return qboxLayout;
 
@@ -194,13 +197,17 @@ QLayout *MainWindow::createViewProposition()
 
    tableProposition = new QTableWidget;
    tableProposition->setEditTriggers(QAbstractItemView::NoEditTriggers);
-//   tableProposition->setHorizontalHeaderItem(0, new QTableWidgetItem("Proposition"));
-//   tableProposition->setColumnHidden(0,true);
+   tableQuestionProposition = new QTableWidget;
+   tableQuestionProposition->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+   tableQuestionProposition->setHorizontalHeaderItem(0, new QTableWidgetItem("Proposition"));
 
 
 
     qboxLayout9->addWidget(addPropositionLabel);
     qboxLayout9->addWidget(tableProposition);
+    qboxLayout9->addWidget(tableQuestionProposition);
+
 
 //    qboxLayout1->addWidget(dropdownQuestion);
 //    qboxLayout1->addWidget(dropdownTheme);
@@ -299,7 +306,7 @@ QLayout *MainWindow::createViewQuestion()
     qboxLayout5->addLayout(qboxLayout3);
     qboxLayout5->addLayout(qboxLayout4);
 
-    populateDropdownQuestion();
+//    populateDropdownQuestion();
     populateDropdownTheme();
 
     return qboxLayout5;
@@ -464,7 +471,6 @@ void MainWindow::populateDropdownTheme()
     while(model->result->next())
     {
         tableThemeQuestion->setItem(row, 1, new QTableWidgetItem(model->result->getString(2).c_str()));
-        qDebug() << "data 1" << model->result->getString(2).c_str();
         tableThemeQuestion->setItem(row,0, new QTableWidgetItem(model->result->getString(1).c_str()));
 
         row++;
@@ -483,7 +489,6 @@ void MainWindow::populateDropdownTheme()
     while(model->result->next())
     {
         tableTheme->setItem(row, 1, new QTableWidgetItem(model->result->getString(2).c_str()));
-//        qDebug() << "data 1" << model->result->getString(2).c_str();
         tableTheme->setItem(row,0, new QTableWidgetItem(model->result->getString(1).c_str()));
 
         row++;
@@ -530,11 +535,12 @@ void MainWindow::populateDropdownProposition()
     int row =0;
     model->connectToDatabase(password,ip);
     model->requestPropositions(2, 1, ip, 1, 1);
+//    model->requestQuestions(2, ip, ip, 1, 1);
+
 
     tableProposition->setColumnHidden(0,true);
     tableProposition->setColumnHidden(2,true);
     tableProposition->setColumnHidden(3,true);
-
 
 
     while(model->result->next())
@@ -545,9 +551,6 @@ void MainWindow::populateDropdownProposition()
         tableProposition->setItem(row, 1, new QTableWidgetItem(model->result->getString(2).c_str()));
         tableProposition->setItem(row, 2, new QTableWidgetItem(model->result->getString(3).c_str()));
         tableProposition->setItem(row, 3, new QTableWidgetItem(model->result->getString(4).c_str()));
-
-
-
         row++;
     }
 
@@ -566,6 +569,7 @@ void MainWindow::populateDropdownQuestion()
     model->requestQuestions(2, ip, ip, 1, 1);
 
     tableQuestion->setColumnHidden(0,true);
+    tableQuestionProposition->setColumnHidden(0, true);
 
 
     while(model->result->next())
@@ -578,13 +582,47 @@ void MainWindow::populateDropdownQuestion()
 
         tableQuestion->setItem(row, 0, new QTableWidgetItem(model->result->getString(1).c_str()));
         tableQuestion->setItem(row, 1, new QTableWidgetItem(test));
+        tableQuestionProposition->setItem(row, 0, new QTableWidgetItem(model->result->getString(1).c_str()));
+        tableQuestionProposition->setItem(row, 1, new QTableWidgetItem(test));
+
 
         row++;
     }
 
     tableQuestion->setRowCount(row);
     tableQuestion->setColumnCount(2);
+    tableQuestionProposition->setRowCount(row);
+    tableQuestionProposition->setColumnCount(2);
 
+
+
+}
+
+void MainWindow::populateDropdownScore()
+{
+    QString password = "burgerquiz";
+    QString ip ="127.0.0.1";
+    int row =0;
+    model->connectToDatabase(password,ip);
+    model->requestScore();
+
+    while(model->result->next())
+    {
+        int miam = model->result->getInt(3);
+        int temps = model->result->getInt(4);
+
+        qDebug() << "miam" << miam;
+        qDebug() << "temps" << temps;
+        tableScore->setItem(row,0, new QTableWidgetItem(model->result->getString(2).c_str()));
+        tableScore->setItem(row,1, new QTableWidgetItem(miam));
+        tableScore->setItem(row,2, new QTableWidgetItem(temps));
+
+        row++;
+
+    }
+
+    tableScore->setRowCount(row);
+    tableScore->setColumnCount(4);
 
 }
 
@@ -655,6 +693,9 @@ void MainWindow::slotAddTheme()
 
         inputTheme->clear();
     }
+    populateDropdownTheme();
+    populateDropdownQuestion();
+    populateDropdownProposition();
 }
 
 void MainWindow::slotUpdateTheme()
@@ -685,6 +726,11 @@ void MainWindow::slotUpdateTheme()
 
         inputTheme->clear();
     }
+
+    populateDropdownTheme();
+    populateDropdownQuestion();
+    populateDropdownProposition();
+
 }
 
 void MainWindow::slotDeleteTheme()
@@ -713,6 +759,9 @@ void MainWindow::slotDeleteTheme()
 
         inputTheme->clear();
     }
+    populateDropdownTheme();
+    populateDropdownQuestion();
+    populateDropdownProposition();
 
 
 }
@@ -730,7 +779,6 @@ void MainWindow::slotSelectTheme(int row, int coll)
     inputTheme->setText(theme);
     idTheme->setText(id);
 
-//    qDebug()<<"id"<<id;
 }
 
 void MainWindow::slotAddQuestion()
@@ -767,6 +815,8 @@ void MainWindow::slotAddQuestion()
         addQuestion1->clear();
         addQuestion2->clear();
     }
+    populateDropdownQuestion();
+    populateDropdownProposition();
 
 }
 
@@ -799,6 +849,8 @@ void MainWindow::slotUpdateQuestion()
         addQuestion1->clear();
         addQuestion2->clear();
     }
+    populateDropdownQuestion();
+    populateDropdownProposition();
 
 }
 
@@ -833,6 +885,10 @@ void MainWindow::slotDeleteQuestion()
         addQuestion1->clear();
         addQuestion2->clear();
     }
+
+    populateDropdownQuestion();
+    populateDropdownProposition();
+
 }
 
 void MainWindow::slotSelectQuestion(int row, int coll)
@@ -858,20 +914,13 @@ void MainWindow::slotAddProposition()
 {
 
     QString proposition1 = addProposition1->text();
-//    QString proposition2 = addProposition2->text();
-//    QString proposition3 = addProposition3->text();
     int reponseProposition1 = dropdownReponse1->currentIndex()+1;
-//    int reponseProposition2 = dropdownReponse2->currentIndex()+1;
-//    int reponseProposition3 = dropdownReponse3->currentIndex()+1;
-    int idQuestion =1;
-    int idProposition =1;
+    int idQ = idQuestion->text().toInt();
+    int idP = idProposition->text().toInt();
 
     QString password = "burgerquiz";
     QString ip ="127.0.0.1";
     model->connectToDatabase(password,ip);
-    model->requestPropositions(1, idProposition, proposition1, reponseProposition1, idQuestion);
-//    model->requestPropositions(1, idProposition, proposition2, reponseProposition2, idQuestion);
-//    model->requestPropositions(1, idProposition, proposition3, reponseProposition3, idQuestion);
 
 
     QMessageBox::StandardButton reponse;
@@ -879,9 +928,7 @@ void MainWindow::slotAddProposition()
 
     if(reponse ==  QMessageBox::Yes && model->verificationData(proposition1))
     {
-//        model->requestPropositions(5, idProposition, proposition1, reponseProposition1, idQuestion);\
-//        model->requestPropositions(5, idProposition, proposition2, reponseProposition2, idQuestion);
-//        model->requestPropositions(5, idProposition, proposition3, reponseProposition3, idQuestion);
+        model->requestPropositions(1, idP, proposition1, reponseProposition1, idQ);
 
         if(model->getRequestEffect())
         {
@@ -895,34 +942,26 @@ void MainWindow::slotAddProposition()
 
         reponse = QMessageBox::question(this, "[ERREUR] Ajout d'une proposition", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
 
-        inputPseudo->clear();
-        inputName->clear();
-        inputFirstname->clear();
-        inputPasswordUser->clear();
-        inputPasswordVerifUser->clear();
+    addProposition1->clear();
     }
+
+    populateDropdownProposition();
 }
 
 void MainWindow::slotUpdateProposition()
 {
 
     QString proposition1 = addProposition1->text();
-//    QString proposition2 = addProposition2->text();
-//    QString proposition3 = addProposition3->text();
-    int reponseProposition1;
-    int reponseProposition2;
-    int reponseProposition3;
-    int idQuestion;
-    int idProposition;
+    int reponseProposition1 = dropdownReponse1->currentIndex()+1;
+    int idQ = idQuestion->text().toInt();
+    int idP = idProposition->text().toInt();
 
     QMessageBox::StandardButton reponse;
     reponse = QMessageBox::question(this, "Mise a jour d'une proposition", "Les propositions"+proposition1 +" vont etre supprimes de la base", QMessageBox::Yes|QMessageBox::No);
 
     if(reponse ==  QMessageBox::Yes && model->verificationData(proposition1))
     {
-        model->requestPropositions(5, idProposition, proposition1, reponseProposition1, idQuestion);\
-//        model->requestPropositions(5, idProposition, proposition2, reponseProposition2, idQuestion);
-//        model->requestPropositions(5, idProposition, proposition3, reponseProposition3, idQuestion);
+        model->requestPropositions(4, idP, proposition1, reponseProposition1, idQ);\
 
         if(model->getRequestEffect())
         {
@@ -936,15 +975,11 @@ void MainWindow::slotUpdateProposition()
 
         reponse = QMessageBox::question(this, "[ERREUR] Mise a jour d'une proposition", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
 
-        inputPseudo->clear();
-        inputName->clear();
-        inputFirstname->clear();
-        inputPasswordUser->clear();
-        inputPasswordVerifUser->clear();
-
+    addProposition1->clear();
 
     }
 
+    populateDropdownProposition();
 
 }
 
@@ -952,18 +987,18 @@ void MainWindow::slotDeleteProposition()
 {
 
     QString proposition1 = addProposition1->text();
-    int reponseProposition1;
-    int reponseProposition2;
-    int reponseProposition3;
-    int idQuestion;
-    int idProposition;
+    int reponseProposition1 = dropdownReponse1->currentIndex()+1;
+    int idQ = idQuestion->text().toInt();
+    int idP = idProposition->text().toInt();
+
+    qDebug()<<"idP" << idP;
 
     QMessageBox::StandardButton reponse;
     reponse = QMessageBox::question(this, "Suppression d'une proposition", "Les propositions"+proposition1 +" vont etre supprimes de la base", QMessageBox::Yes|QMessageBox::No);
 
     if(reponse ==  QMessageBox::Yes && model->verificationData(proposition1))
     {
-        model->requestPropositions(5, idProposition, proposition1, reponseProposition1, idQuestion);\
+        model->requestPropositions(5, idP, proposition1, reponseProposition1, idQ);\
 
         if(model->getRequestEffect())
         {
@@ -977,14 +1012,13 @@ void MainWindow::slotDeleteProposition()
 
         reponse = QMessageBox::question(this, "[ERREUR] Suppression d'une proposition", "L'un des champs de saisi est vide", QMessageBox::Yes|QMessageBox::No);
 
-        inputPseudo->clear();
-        inputName->clear();
-        inputFirstname->clear();
-        inputPasswordUser->clear();
-        inputPasswordVerifUser->clear();
+        addProposition1->clear();
 
 
     }
+
+    populateDropdownProposition();
+
 }
 
 void MainWindow::slotSelectProposition(int row, int coll)

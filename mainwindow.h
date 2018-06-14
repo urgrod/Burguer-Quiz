@@ -51,7 +51,7 @@ public:
      void populateDropdownUser();
      void populateDropdownQuestion();
      void populateDropdownProposition();
-
+     void populateDropdownScore();
 private:
 
      QWidget *widgetGeneral;
@@ -82,6 +82,7 @@ private:
 
 
      //interface d'accueil
+    QTableWidget *tableScore;
 
      //interface proposition
      QLineEdit *addProposition1;
