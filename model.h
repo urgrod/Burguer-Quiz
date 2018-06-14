@@ -30,6 +30,8 @@ public:
 
     bool getRequestEffect();
     void setRequestEffect(bool reponse);
+    void setAuth(bool value);
+    bool getAuth();
 
 
     sql::ResultSet *result;
@@ -39,6 +41,7 @@ private:
     sql::Connection *connection;
     sql::PreparedStatement *statement;
     bool requestEffect;
+    bool auth;
 
 
 };

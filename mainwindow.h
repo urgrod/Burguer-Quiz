@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <model.h>
-#include <controller.h>
 
 #include <QMainWindow>
 #include <QWidget>
@@ -56,7 +55,6 @@ private:
 
      QWidget *widgetGeneral;
      Model *model;
-     Controller *control;
 
      //menu
      QTabWidget *onglets;

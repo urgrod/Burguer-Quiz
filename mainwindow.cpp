@@ -1,12 +1,10 @@
 #include "mainwindow.h"
 #include "model.h"
-#include "controller.h"
 
 MainWindow::MainWindow() : QMainWindow()
 {
 
     model = new Model();
-    control = new Controller();
 
     this->setWindowTitle("Burger Quiz - Administration");
     this->resize(900,300);

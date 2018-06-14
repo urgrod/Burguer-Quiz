@@ -9,17 +9,16 @@ QT += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = projet
+TARGET = BurgerQuiz.exe
 TEMPLATE = app
 LIBS += -lmysqlcppconn
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    model.cpp\
-controller.cpp
+    model.cpp
 
 HEADERS  += mainwindow.h \
-    model.h\
-controller.h
+    model.h
+
 
 FORMS    +=

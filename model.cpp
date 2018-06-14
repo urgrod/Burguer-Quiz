@@ -1,5 +1,4 @@
 #include "model.h"
-#include "controller.h"
 
 Model::Model()
 {
@@ -12,6 +11,8 @@ void Model::connectToDatabase(QString password, QString ip)
     QFile file("bdd.conf");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&file);
+
+    qDebug()<<"password "<<password;
 
     QStringList line;
 
@@ -369,7 +370,6 @@ void Model::requestPropositions(int requestType, int idPropositions, QString pro
 
 bool Model::authentificationUser(QString pseudo, QString password, QString passwordDatabase, QString ip)
 {
-    Controller *control = new Controller();
 
     QByteArray ba = QCryptographicHash::hash(passwordDatabase.toUtf8(), QCryptographicHash::Sha256);
     QByteArray ba2 = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
@@ -403,7 +403,7 @@ bool Model::authentificationUser(QString pseudo, QString password, QString passw
 
         if(hashDatabase == line[2] && pseudo.toStdString() == result->getString(1).c_str() && hash.toStdString() == result->getString(2).c_str() && result->getInt(6) == 1)
         {
-            control->setAuth(1);
+            auth =1;
             qDebug() << "[INFO] Authentification reussie, login: " << pseudo;
             //affichage de la vue d'administration
 
@@ -413,13 +413,13 @@ bool Model::authentificationUser(QString pseudo, QString password, QString passw
         {
             qDebug() << "[INFO] Authentification echouee   2";
 
-            control->setAuth(0);
+            auth = 0;
             return 0;
         }
     }
     else{
         qDebug() << "[INFO] Authentification echouee";
-        control->setAuth(0);
+        auth = 0;
         return 0;
     }
 }
@@ -454,4 +454,14 @@ void Model::requestScore()
     setRequestEffect(result);
     return;
 
+}
+
+void Model::setAuth(bool value)
+{
+    auth = value;
+}
+
+bool Model::getAuth()
+{
+    return auth;
 }
