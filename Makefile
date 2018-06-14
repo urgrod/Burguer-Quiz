@@ -313,7 +313,9 @@ compiler_rcc_clean:
 compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp
-moc_mainwindow.cpp: mainwindow.h
+moc_mainwindow.cpp: model.h \
+		controller.h \
+		mainwindow.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/isen/Documents/Burguer-Quiz -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
 
 compiler_moc_source_make_all:
@@ -331,7 +333,8 @@ compiler_clean: compiler_moc_header_clean
 ####### Compile
 
 main.o: main.cpp mainwindow.h \
-		model.h
+		model.h \
+		controller.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
@@ -343,7 +346,8 @@ model.o: model.cpp model.h \
 		controller.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o model.o model.cpp
 
-controller.o: controller.cpp controller.h
+controller.o: controller.cpp controller.h \
+		model.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o controller.o controller.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 

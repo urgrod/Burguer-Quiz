@@ -13,20 +13,24 @@ void Model::connectToDatabase(QString password, QString ip)
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&file);
 
-
     QStringList line;
 
     while(!flux.atEnd())
     {
         line << flux.readLine();
     }
+      driver = get_driver_instance();
+//    connection = driver->connect(("tcp://" + ip2.toStdString() + ":3306"), line[1].toStdString(), password.toStdString());
+//    connection = driver->connect(("tcp://" + ip.toStdString() + ":3306"), line[1].toStdString(), "burgerquiz");
+//      connection = driver->connect(("tcp://" + ip.toStdString() + ":3306"), line[1].toStdString(), "burgerquiz");
+    connection = driver->connect(("tcp://" + ip.toStdString() + ":3306"), line[1].toStdString(), "burgerquiz"/*password.toStdString()*/);
 
-    driver = get_driver_instance();
-    connection = driver->connect(("tcp://" + ip.toStdString() + ":3306"), line[1].toStdString(), password.toStdString());
+
 
     if(connection)
     {
         connection->setSchema(line[3].toStdString());
+
         qDebug()<< "[INFO] Connexion sur " << line[3] << "effectuee";
     }
     else{
@@ -371,9 +375,10 @@ bool Model::authentificationUser(QString pseudo, QString password, QString passw
     QByteArray ba2 = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
     QString hashDatabase = ba.toHex();
     QString hash = ba2.toHex();
-    bool vip;
+    bool vip =0;
 
     qDebug()<<"hash" << hash;
+    qDebug()<<"hash DB" << hashDatabase;
 
     QFile file("bdd.conf");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -385,6 +390,8 @@ bool Model::authentificationUser(QString pseudo, QString password, QString passw
         line << flux.readLine();
 
     }
+
+    qDebug() << "file" << line[2];
 
     if(line[2] == hashDatabase)
     {
@@ -404,6 +411,8 @@ bool Model::authentificationUser(QString pseudo, QString password, QString passw
         }
         else
         {
+            qDebug() << "[INFO] Authentification echouee   2";
+
             control->setAuth(0);
             return 0;
         }
@@ -435,13 +444,6 @@ bool Model::getRequestEffect()
 void Model::setRequestEffect(bool reponse)
 {
     requestEffect = reponse;
-}
-
-int Model::verificationRadio(QRadioButton *radio1, QRadioButton *radio2, QRadioButton *radio3)
-{
-    if(radio1->isChecked()) return 1;
-    if(radio2->isChecked()) return 2;
-    if(radio3->isChecked()) return 3;
 }
 
 void Model::requestScore()

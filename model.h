@@ -27,7 +27,6 @@ public:
 
     bool authentificationUser(QString pseudo, QString password, QString passwordDatabase, QString ip);
     bool verificationData(QString data);
-    int verificationRadio(QRadioButton *radio1, QRadioButton *radio2, QRadioButton *radio3);
 
     bool getRequestEffect();
     void setRequestEffect(bool reponse);

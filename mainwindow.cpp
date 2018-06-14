@@ -611,8 +611,6 @@ void MainWindow::populateDropdownScore()
         int miam = model->result->getInt(3);
         int temps = model->result->getInt(4);
 
-        qDebug() << "miam" << miam;
-        qDebug() << "temps" << temps;
         tableScore->setItem(row,0, new QTableWidgetItem(model->result->getString(2).c_str()));
         tableScore->setItem(row,1, new QTableWidgetItem(miam));
         tableScore->setItem(row,2, new QTableWidgetItem(temps));
@@ -629,28 +627,40 @@ void MainWindow::populateDropdownScore()
 void MainWindow::slotLogin()
 {
 
-//    QString pseudo = loginInput->text();
-//    QString password = passwordInput->text();
-//    QString ip = ipDatabaseInput->text();
-//    QString passwordDb = passwordDatabaseInput->text();
+    QString pseudo = loginInput->text();
+    QString password = passwordInput->text();
+    QString ip = ipDatabaseInput->text();
+    QString passwordDb = passwordDatabaseInput->text();
 
-//    bool auth = model->authentificationUser(pseudo, password, passwordDb, ip);
+    QFile file("bdd.conf");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream flux(&file);
 
-//    if(auth == 1)
-//    {
-//        model->connectToDatabase(passwordDb,ip);
-//        onglets->setVisible(true);
-//        widgetGeneral->setVisible(false);
+    QStringList line;
 
-//    }
+    while(!flux.atEnd())
+    {
+        line << flux.readLine();
+    }
 
-//    else
-//    {
-//        QMessageBox::information(this, "ERREUR", "Vous n'avez pas reussi a vous connecter, l'un des champs saisis est faux");
-//    }
 
-    onglets->setVisible(true);
-    widgetGeneral->setVisible(false);
+    bool auth = model->authentificationUser(pseudo, password, passwordDb, ip);
+
+    if(auth == 1 || passwordDb == line[2])
+    {
+        model->connectToDatabase(passwordDb,ip);
+        onglets->setVisible(true);
+        widgetGeneral->setVisible(false);
+
+    }
+
+    else
+    {
+        QMessageBox::information(this, "ERREUR", "Vous n'avez pas reussi a vous connecter, l'un des champs saisis est faux");
+    }
+
+//    onglets->setVisible(true);
+//    widgetGeneral->setVisible(false);
 }
 
 void MainWindow::slotLogout()
