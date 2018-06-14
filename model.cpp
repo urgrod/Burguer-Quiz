@@ -232,7 +232,7 @@ void Model::requestQuestions(int requestType, QString libelle2, QString libelle1
     if(requestType == 2)
     {
         //requete read all
-        statement = connection->prepareStatement("SELECT * FROM questions");
+        statement = connection->prepareStatement("SELECT * FROM QUESTIONS");
 
         result = statement->executeQuery();
         setRequestEffect(result);
@@ -243,7 +243,7 @@ void Model::requestQuestions(int requestType, QString libelle2, QString libelle1
     if(requestType == 3)
     {
         //requete read 1
-        statement = connection->prepareStatement("SELECT * FROM questions WHERE id_question = ?;");
+        statement = connection->prepareStatement("SELECT * FROM QUESTIONS WHERE id_question = ?;");
 
         statement->setInt(1,idQuestion);
 
@@ -256,7 +256,7 @@ void Model::requestQuestions(int requestType, QString libelle2, QString libelle1
     if(requestType == 4)
     {
         //requete update
-        statement = connection->prepareStatement("UPDATE questions SET libelle1 = ?, libelle2 = ?, WHERE questions.id_question = ?;");
+        statement = connection->prepareStatement("UPDATE QUESTIONS SET libelle1 = ?, libelle2 = ?, WHERE QUESTIONS.id_question = ?;");
 
         statement->setString(1,libelle1.toStdString());
         statement->setString(2,libelle2.toStdString());
@@ -271,7 +271,7 @@ void Model::requestQuestions(int requestType, QString libelle2, QString libelle1
     if(requestType == 5)
     {
         //requete delete
-        statement = connection->prepareStatement("DELETE FROM questions WHERE id_question = ?;");
+        statement = connection->prepareStatement("DELETE FROM QUESTIONS WHERE id_question = ?;");
 
         statement->setInt(1,idQuestion);
 
@@ -306,7 +306,7 @@ void Model::requestPropositions(int requestType, int idPropositions, QString pro
     if(requestType == 2)
     {
         //requete read all
-        statement = connection->prepareStatement("SELECT * FROM propositions");
+        statement = connection->prepareStatement("SELECT * FROM PROPOSITIONS");
 
         result = statement->executeQuery();
         setRequestEffect(result);
@@ -318,7 +318,7 @@ void Model::requestPropositions(int requestType, int idPropositions, QString pro
     if(requestType == 3)
     {
         //requete read 1
-        statement = connection->prepareStatement("SELECT * FROM propositions WHERE id_propositions = ?;");
+        statement = connection->prepareStatement("SELECT * FROM PROPOSITIONS WHERE id_propositions = ?;");
 
         statement->setInt(1, idPropositions);
 
@@ -332,7 +332,7 @@ void Model::requestPropositions(int requestType, int idPropositions, QString pro
     if(requestType == 4)
     {
         //requete update
-        statement = connection->prepareStatement("UPDATE propositions SET proposition = ?, reponse_question = ?, WHERE propositions.id_proposition = ?;");
+        statement = connection->prepareStatement("UPDATE PROPOSITIONS SET proposition = ?, reponse_question = ?, WHERE propositions.id_proposition = ?;");
 
         statement->setString(1,proposition.toStdString());
         statement->setInt(2, reponseQuestion);
@@ -348,7 +348,7 @@ void Model::requestPropositions(int requestType, int idPropositions, QString pro
     if(requestType == 5)
     {
         //requete delete
-        statement = connection->prepareStatement("DELETE FROM propositions WHERE propositions.id_question = ?;");
+        statement = connection->prepareStatement("DELETE FROM PROPOSITIONS WHERE propositions.id_question = ?;");
 
         statement->setInt(1, idQuestion);
 

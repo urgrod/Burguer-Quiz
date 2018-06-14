@@ -25,6 +25,8 @@
 #include <QAction>
 #include <QApplication>
 #include <QMessageBox>
+#include <QTableWidget>
+#include <QTableWidgetItem>
 
 
 class MainWindow : public QMainWindow
@@ -48,6 +50,7 @@ public:
      void populateDropdownReponse();
      void populateDropdownUser();
      void populateDropdownQuestion();
+     void populateDropdownProposition();
 
 private:
 
@@ -81,25 +84,26 @@ private:
      //interface d'accueil
 
      //interface proposition
-     QComboBox *dropdownProposition;
+//     QComboBox *dropdownProposition;
      QLineEdit *addProposition1;
      QLineEdit *addProposition2;
      QLineEdit *addProposition3;
-     QRadioButton *answerRadio1;
-     QRadioButton *answerRadio2;
-     QRadioButton *answerRadio3;
-     QRadioButton *answerRadio4;
-     QRadioButton *answerRadio5;
-     QRadioButton *answerRadio6;
-     QRadioButton *answerRadio7;
-     QRadioButton *answerRadio8;
-     QRadioButton *answerRadio9;
+//     QRadioButton *answerRadio1;
+//     QRadioButton *answerRadio2;
+//     QRadioButton *answerRadio3;
+//     QRadioButton *answerRadio4;
+//     QRadioButton *answerRadio5;
+//     QRadioButton *answerRadio6;
+//     QRadioButton *answerRadio7;
+//     QRadioButton *answerRadio8;
+//     QRadioButton *answerRadio9;
      QPushButton *addPropositionButton;
      QPushButton *updatePropositionButton;
      QPushButton *deletePropositionButton;
-     QPushButton *selectPropositionButton;
+//     QPushButton *selectPropositionButton;
      QLabel *addPropositionLabel;
      QLabel *answerPropositionLabel;
+     QTableWidget *tableProposition;
 
      QComboBox *dropdownReponse1;
      QComboBox *dropdownReponse2;
@@ -107,7 +111,7 @@ private:
 
 
      //interface question
-     QComboBox *dropdownQuestion;
+     QTableWidget *tableQuestion;
      QLabel *choiceQuestionLabel;
      QLineEdit *addQuestion1;
      QLineEdit *addQuestion2;
@@ -117,16 +121,16 @@ private:
      QPushButton *addQuestionButton;
      QPushButton *updateQuestionButton;
      QPushButton *deleteQuestionButton;
-     QPushButton *selectQuestionButton;
+//     QPushButton *selectQuestionButton;
 
      //interface theme
      QLabel *textTheme;
      QLineEdit *inputTheme;
-     QComboBox *dropdownTheme;
      QPushButton *addThemeButton;
      QPushButton *updateThemeButton;
      QPushButton *deleteThemeButton;
      QPushButton *selectThemeButton;
+     QTableWidget *tableTheme;
 
      //interface user
      QComboBox *dropdownUser;
@@ -161,20 +165,20 @@ public slots:
      void slotLogin();
      void slotLogout();
 
-     void slotAddTheme();
-     void slotUpdateTheme();
-     void slotDeleteTheme();
-     void slotSelectTheme();
+     void slotAddTheme(int row, int coll);
+     void slotUpdateTheme(int row, int coll);
+     void slotDeleteTheme(int row, int coll);
+     void slotSelectTheme(int row, int coll);
 
-     void slotAddQuestion();
-     void slotUpdateQuestion();
-     void slotDeleteQuestion();
-     void slotSelectQuestion();
+     void slotAddQuestion(int row, int coll);
+     void slotUpdateQuestion(int row, int coll);
+     void slotDeleteQuestion(int row, int coll);
+     void slotSelectQuestion(int row, int coll);
 
-     void slotAddProposition();
-     void slotUpdateProposition();
-     void slotDeleteProposition();
-     void slotSelectProposition();
+     void slotAddProposition(int row, int coll);
+     void slotUpdateProposition(int row, int coll);
+     void slotDeleteProposition(int row, int coll);
+     void slotSelectProposition(int row, int coll);
 
      void slotAddUser();
      void slotUpdateUser();

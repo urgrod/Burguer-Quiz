@@ -27,6 +27,9 @@ reponse quesiton:
 
 a faire:
 
+page d'accueil
+appel de chaque populate a chaque requete
+
 THEME:
 U --> manque l'id dans le menu deroulant
 D--> manque l'id dans le menu deroulant
@@ -34,7 +37,6 @@ D--> manque l'id dans le menu deroulant
 QUESTIONS:
 C --> manque l'id du theme dans le menu deroulant
 R --> manque l'id du theme dans le menu deroulant
-U --> manque l'id du theme dans le menu deroulant
 D --> manque l'id du theme dans le menu deroulant
 
 PROPOSITIONS:
