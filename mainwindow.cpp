@@ -71,10 +71,10 @@ MainWindow::MainWindow() : QMainWindow()
 //    connect(selectPropositionButton, SIGNAL(clicked(bool)), this, SLOT(slotSelectProposition()));
 
 
-    connect(addUserButton, SIGNAL(clicked(bool)), this, SLOT(slotAddUser(int,int)));
-    connect(updateUserButton, SIGNAL(clicked(bool)), this, SLOT(slotUpdateUser(int,int)));
-    connect(deleteUserButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteUser(int,int)));
-    connect(selectUserButton, SIGNAL(clicked(bool)), this, SLOT(slotSelectUser(int,int)));
+    connect(addUserButton, SIGNAL(clicked(bool)), this, SLOT(slotAddUser()));
+    connect(updateUserButton, SIGNAL(clicked(bool)), this, SLOT(slotUpdateUser()));
+    connect(deleteUserButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteUser()));
+    connect(selectUserButton, SIGNAL(clicked(bool)), this, SLOT(slotSelectUser()));
 
     //test
     connect(tableTheme, SIGNAL(cellClicked(int,int)), this, SLOT(slotSelectTheme(int,int)));
@@ -183,8 +183,8 @@ QLayout *MainWindow::createViewProposition()
 //    dropdownProposition = new QComboBox;
     addPropositionLabel = new QLabel("Ajouter des propositions");
     addProposition1 = new QLineEdit;
-    addProposition2 = new QLineEdit;
-    addProposition3 = new QLineEdit;
+//    addProposition2 = new QLineEdit;
+//    addProposition3 = new QLineEdit;
     answerPropositionLabel = new QLabel("Choisir la bonne reponse:");
 //    answerRadio1 = new QRadioButton("Question 1");
 //    answerRadio2 = new QRadioButton("Question2");
@@ -197,8 +197,8 @@ QLayout *MainWindow::createViewProposition()
 //    answerRadio9 = new QRadioButton("les 2");
 
     dropdownReponse1 = new QComboBox;
-    dropdownReponse2 = new QComboBox;
-    dropdownReponse3 = new QComboBox;
+//    dropdownReponse2 = new QComboBox;
+//    dropdownReponse3 = new QComboBox;
 
     addPropositionButton = new QPushButton("Ajouter");
     updatePropositionButton = new QPushButton("Modifier");
@@ -219,8 +219,8 @@ QLayout *MainWindow::createViewProposition()
 //    qboxLayout1->addWidget(dropdownTheme);
 
     qboxLayout2->addWidget(addProposition1);
-    qboxLayout2->addWidget(addProposition2);
-    qboxLayout2->addWidget(addProposition3);
+//    qboxLayout2->addWidget(addProposition2);
+//    qboxLayout2->addWidget(addProposition3);
 
     qboxLayout3->addWidget(addPropositionButton);
     qboxLayout3->addWidget(updatePropositionButton);
@@ -228,8 +228,8 @@ QLayout *MainWindow::createViewProposition()
 
     qboxLayout8->addWidget(answerPropositionLabel);
     qboxLayout8->addWidget(dropdownReponse1);
-    qboxLayout8->addWidget(dropdownReponse2);
-    qboxLayout8->addWidget(dropdownReponse3);
+//    qboxLayout8->addWidget(dropdownReponse2);
+//    qboxLayout8->addWidget(dropdownReponse3);
 
 
 //    qboxLayout4->addWidget(answerRadio1);
@@ -488,12 +488,12 @@ void MainWindow::populateDropdownReponse()
     dropdownReponse1->addItem("libelle 1");
     dropdownReponse1->addItem("libelle 2");
     dropdownReponse1->addItem("les 2");
-    dropdownReponse2->addItem("libelle 1");
-    dropdownReponse2->addItem("libelle 2");
-    dropdownReponse2->addItem("les 2");
-    dropdownReponse3->addItem("libelle 1");
-    dropdownReponse3->addItem("libelle 2");
-    dropdownReponse3->addItem("les 2");
+//    dropdownReponse2->addItem("libelle 1");
+//    dropdownReponse2->addItem("libelle 2");
+//    dropdownReponse2->addItem("les 2");
+//    dropdownReponse3->addItem("libelle 1");
+//    dropdownReponse3->addItem("libelle 2");
+//    dropdownReponse3->addItem("les 2");
 
 }
 
@@ -522,7 +522,10 @@ void MainWindow::populateDropdownProposition()
     model->connectToDatabase(password,ip);
     model->requestPropositions(2, 1, ip, 1, 1);
 
-//    tableProposition->setColumnHidden(0,true);
+    tableProposition->setColumnHidden(0,true);
+    tableProposition->setColumnHidden(2,true);
+    tableProposition->setColumnHidden(3,true);
+
 
 
     while(model->result->next())
@@ -849,11 +852,11 @@ void MainWindow::slotAddProposition(int row, int coll)
 {
 
     QString proposition1 = addProposition1->text();
-    QString proposition2 = addProposition2->text();
-    QString proposition3 = addProposition3->text();
+//    QString proposition2 = addProposition2->text();
+//    QString proposition3 = addProposition3->text();
     int reponseProposition1 = dropdownReponse1->currentIndex()+1;
-    int reponseProposition2 = dropdownReponse2->currentIndex()+1;
-    int reponseProposition3 = dropdownReponse3->currentIndex()+1;
+//    int reponseProposition2 = dropdownReponse2->currentIndex()+1;
+//    int reponseProposition3 = dropdownReponse3->currentIndex()+1;
     int idQuestion =1;
     int idProposition =1;
 
@@ -861,14 +864,14 @@ void MainWindow::slotAddProposition(int row, int coll)
     QString ip ="127.0.0.1";
     model->connectToDatabase(password,ip);
     model->requestPropositions(1, idProposition, proposition1, reponseProposition1, idQuestion);
-    model->requestPropositions(1, idProposition, proposition2, reponseProposition2, idQuestion);
-    model->requestPropositions(1, idProposition, proposition3, reponseProposition3, idQuestion);
+//    model->requestPropositions(1, idProposition, proposition2, reponseProposition2, idQuestion);
+//    model->requestPropositions(1, idProposition, proposition3, reponseProposition3, idQuestion);
 
 
     QMessageBox::StandardButton reponse;
-    reponse = QMessageBox::question(this, "Ajout d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" vont etre ajoutees de la base", QMessageBox::Yes|QMessageBox::No);
+    reponse = QMessageBox::question(this, "Ajout d'une proposition", "Les propositions"+proposition1 +" vont etre ajoutees de la base", QMessageBox::Yes|QMessageBox::No);
 
-    if(reponse ==  QMessageBox::Yes && model->verificationData(proposition1) && model->verificationData(proposition2) && model->verificationData(proposition3))
+    if(reponse ==  QMessageBox::Yes && model->verificationData(proposition1))
     {
 //        model->requestPropositions(5, idProposition, proposition1, reponseProposition1, idQuestion);\
 //        model->requestPropositions(5, idProposition, proposition2, reponseProposition2, idQuestion);
@@ -876,10 +879,10 @@ void MainWindow::slotAddProposition(int row, int coll)
 
         if(model->getRequestEffect())
         {
-            reponse = QMessageBox::question(this, "Ajout d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" a ete ajoute dans la base", QMessageBox::Yes|QMessageBox::No);
+            reponse = QMessageBox::question(this, "Ajout d'une proposition", "Les propositions"+proposition1 +" a ete ajoute dans la base", QMessageBox::Yes|QMessageBox::No);
         }
         else {
-            reponse = QMessageBox::question(this, "[ERREUR] Ajout d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" n'ont pas ete ajoute dans la base", QMessageBox::Yes|QMessageBox::No);
+            reponse = QMessageBox::question(this, "[ERREUR] Ajout d'une proposition", "Les propositions"+proposition1 +" n'ont pas ete ajoute dans la base", QMessageBox::Yes|QMessageBox::No);
         }
     }
     else {
@@ -898,8 +901,8 @@ void MainWindow::slotUpdateProposition(int row, int coll)
 {
 
     QString proposition1 = addProposition1->text();
-    QString proposition2 = addProposition2->text();
-    QString proposition3 = addProposition3->text();
+//    QString proposition2 = addProposition2->text();
+//    QString proposition3 = addProposition3->text();
     int reponseProposition1;
     int reponseProposition2;
     int reponseProposition3;
@@ -907,20 +910,20 @@ void MainWindow::slotUpdateProposition(int row, int coll)
     int idProposition;
 
     QMessageBox::StandardButton reponse;
-    reponse = QMessageBox::question(this, "Mise a jour d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" vont etre supprimes de la base", QMessageBox::Yes|QMessageBox::No);
+    reponse = QMessageBox::question(this, "Mise a jour d'une proposition", "Les propositions"+proposition1 +" vont etre supprimes de la base", QMessageBox::Yes|QMessageBox::No);
 
-    if(reponse ==  QMessageBox::Yes && model->verificationData(proposition1) && model->verificationData(proposition2) && model->verificationData(proposition3))
+    if(reponse ==  QMessageBox::Yes && model->verificationData(proposition1))
     {
         model->requestPropositions(5, idProposition, proposition1, reponseProposition1, idQuestion);\
-        model->requestPropositions(5, idProposition, proposition2, reponseProposition2, idQuestion);
-        model->requestPropositions(5, idProposition, proposition3, reponseProposition3, idQuestion);
+//        model->requestPropositions(5, idProposition, proposition2, reponseProposition2, idQuestion);
+//        model->requestPropositions(5, idProposition, proposition3, reponseProposition3, idQuestion);
 
         if(model->getRequestEffect())
         {
-            reponse = QMessageBox::question(this, "Mise a jour d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" ont ete mises a jour dans la base", QMessageBox::Yes|QMessageBox::No);
+            reponse = QMessageBox::question(this, "Mise a jour d'une proposition", "Les propositions"+proposition1 +" ont ete mises a jour dans la base", QMessageBox::Yes|QMessageBox::No);
         }
         else {
-            reponse = QMessageBox::question(this, "[ERREUR] Mise a jour d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" n'ont pas ete mises a jour dans la base", QMessageBox::Yes|QMessageBox::No);
+            reponse = QMessageBox::question(this, "[ERREUR] Mise a jour d'une proposition", "Les propositions"+proposition1 + "n'ont pas ete mises a jour dans la base", QMessageBox::Yes|QMessageBox::No);
         }
     }
     else {
@@ -943,8 +946,8 @@ void MainWindow::slotDeleteProposition(int row, int coll)
 {
 
     QString proposition1 = addProposition1->text();
-    QString proposition2 = addProposition2->text();
-    QString proposition3 = addProposition3->text();
+//    QString proposition2 = addProposition2->text();
+//    QString proposition3 = addProposition3->text();
     int reponseProposition1;
     int reponseProposition2;
     int reponseProposition3;
@@ -952,20 +955,20 @@ void MainWindow::slotDeleteProposition(int row, int coll)
     int idProposition;
 
     QMessageBox::StandardButton reponse;
-    reponse = QMessageBox::question(this, "Suppression d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" vont etre supprimes de la base", QMessageBox::Yes|QMessageBox::No);
+    reponse = QMessageBox::question(this, "Suppression d'une proposition", "Les propositions"+proposition1 +" vont etre supprimes de la base", QMessageBox::Yes|QMessageBox::No);
 
-    if(reponse ==  QMessageBox::Yes && model->verificationData(proposition1) && model->verificationData(proposition2) && model->verificationData(proposition3))
+    if(reponse ==  QMessageBox::Yes && model->verificationData(proposition1))
     {
         model->requestPropositions(5, idProposition, proposition1, reponseProposition1, idQuestion);\
-        model->requestPropositions(5, idProposition, proposition2, reponseProposition2, idQuestion);
-        model->requestPropositions(5, idProposition, proposition3, reponseProposition3, idQuestion);
+//        model->requestPropositions(5, idProposition, proposition2, reponseProposition2, idQuestion);
+//        model->requestPropositions(5, idProposition, proposition3, reponseProposition3, idQuestion);
 
         if(model->getRequestEffect())
         {
-            reponse = QMessageBox::question(this, "Suppression d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" ont ete supprimes de la base", QMessageBox::Yes|QMessageBox::No);
+            reponse = QMessageBox::question(this, "Suppression d'une proposition", "Les propositions"+proposition1 +" ont ete supprimes de la base", QMessageBox::Yes|QMessageBox::No);
         }
         else {
-            reponse = QMessageBox::question(this, "[ERREUR] Suppression d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" n'ont pas ete supprimes de la base", QMessageBox::Yes|QMessageBox::No);
+            reponse = QMessageBox::question(this, "[ERREUR] Suppression d'une proposition", "Les propositions"+proposition1 +" n'ont pas ete supprimes de la base", QMessageBox::Yes|QMessageBox::No);
         }
     }
     else {
@@ -991,12 +994,15 @@ void MainWindow::slotSelectProposition(int row, int coll)
      * affichage de la requete dans les champs
     */
 
-//    QString id = tableProposition->item(row,0)->text();
-//    QString text = tableProposition->item(row, coll)->text();
+    QString id = tableProposition->item(row,0)->text();
+    QString text = tableProposition->item(row, coll)->text();
+    QString reponse = tableProposition->item(row,2)->text();
+    int reponseInt = reponse.toInt() -1;
 
-//    addQuestion1->setText(text);
+    addProposition1->setText(text);
+    dropdownReponse1->setCurrentIndex(reponseInt);
 
-//    qDebug()<<"id"<<id;
+    qDebug()<<"id"<<id;
 
 
 }

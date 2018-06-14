@@ -86,8 +86,8 @@ private:
      //interface proposition
 //     QComboBox *dropdownProposition;
      QLineEdit *addProposition1;
-     QLineEdit *addProposition2;
-     QLineEdit *addProposition3;
+//     QLineEdit *addProposition2;
+//     QLineEdit *addProposition3;
 //     QRadioButton *answerRadio1;
 //     QRadioButton *answerRadio2;
 //     QRadioButton *answerRadio3;
@@ -106,8 +106,8 @@ private:
      QTableWidget *tableProposition;
 
      QComboBox *dropdownReponse1;
-     QComboBox *dropdownReponse2;
-     QComboBox *dropdownReponse3;
+//     QComboBox *dropdownReponse2;
+//     QComboBox *dropdownReponse3;
 
 
      //interface question
