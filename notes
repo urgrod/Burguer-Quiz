@@ -23,3 +23,22 @@ reponse quesiton:
 		--> reponse = 2
 	si les2 ok
 		--> reponse = 3
+
+
+a faire:
+
+THEME:
+U --> manque l'id dans le menu deroulant
+D--> manque l'id dans le menu deroulant
+
+QUESTIONS:
+C --> manque l'id du theme dans le menu deroulant
+R --> manque l'id du theme dans le menu deroulant
+U --> manque l'id du theme dans le menu deroulant
+D --> manque l'id du theme dans le menu deroulant
+
+PROPOSITIONS:
+C -->manque l'id de la question
+R --> manque l'id de la question dans le menu deroulant
+U --> manque l'id de la question dans le menu deroulant
+D --> manque l'id de la question dans le menu deroulant

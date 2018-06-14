@@ -76,6 +76,9 @@ MainWindow::MainWindow() : QMainWindow()
     connect(deleteUserButton, SIGNAL(clicked(bool)), this, SLOT(slotDeleteUser()));
     connect(selectUserButton, SIGNAL(clicked(bool)), this, SLOT(slotSelectUser()));
 
+    populateDropdownTheme();
+//    populateDropdownUser();
+
 }
 
 MainWindow::~MainWindow()
@@ -175,15 +178,20 @@ QLayout *MainWindow::createViewProposition()
     addProposition2 = new QLineEdit;
     addProposition3 = new QLineEdit;
     answerPropositionLabel = new QLabel("Choisir la bonne reponse:");
-    answerRadio1 = new QRadioButton("Question 1");
-    answerRadio2 = new QRadioButton("Question2");
-    answerRadio3 = new QRadioButton("les 2");
-    answerRadio4 = new QRadioButton("Question 1");
-    answerRadio5 = new QRadioButton("Question2");
-    answerRadio6 = new QRadioButton("les 2");
-    answerRadio7 = new QRadioButton("Question 1");
-    answerRadio8 = new QRadioButton("Question2");
-    answerRadio9 = new QRadioButton("les 2");
+//    answerRadio1 = new QRadioButton("Question 1");
+//    answerRadio2 = new QRadioButton("Question2");
+//    answerRadio3 = new QRadioButton("les 2");
+//    answerRadio4 = new QRadioButton("Question 1");
+//    answerRadio5 = new QRadioButton("Question2");
+//    answerRadio6 = new QRadioButton("les 2");
+//    answerRadio7 = new QRadioButton("Question 1");
+//    answerRadio8 = new QRadioButton("Question2");
+//    answerRadio9 = new QRadioButton("les 2");
+
+    dropdownReponse1 = new QComboBox;
+    dropdownReponse2 = new QComboBox;
+    dropdownReponse3 = new QComboBox;
+
     addPropositionButton = new QPushButton("Ajouter");
     updatePropositionButton = new QPushButton("Modifier");
     deletePropositionButton = new QPushButton("Supprimer");
@@ -205,17 +213,22 @@ QLayout *MainWindow::createViewProposition()
     qboxLayout3->addWidget(deletePropositionButton);
 
     qboxLayout8->addWidget(answerPropositionLabel);
-    qboxLayout4->addWidget(answerRadio1);
-    qboxLayout4->addWidget(answerRadio4);
-    qboxLayout4->addWidget(answerRadio7);
+    qboxLayout8->addWidget(dropdownReponse1);
+    qboxLayout8->addWidget(dropdownReponse2);
+    qboxLayout8->addWidget(dropdownReponse3);
 
-    qboxLayout6->addWidget(answerRadio2);
-    qboxLayout6->addWidget(answerRadio5);
-    qboxLayout6->addWidget(answerRadio8);
 
-    qboxLayout7->addWidget(answerRadio3);
-    qboxLayout7->addWidget(answerRadio6);
-    qboxLayout7->addWidget(answerRadio9);
+//    qboxLayout4->addWidget(answerRadio1);
+//    qboxLayout4->addWidget(answerRadio4);
+//    qboxLayout4->addWidget(answerRadio7);
+
+//    qboxLayout6->addWidget(answerRadio2);
+//    qboxLayout6->addWidget(answerRadio5);
+//    qboxLayout6->addWidget(answerRadio8);
+
+//    qboxLayout7->addWidget(answerRadio3);
+//    qboxLayout7->addWidget(answerRadio6);
+//    qboxLayout7->addWidget(answerRadio9);
 
     qboxLayout10->addWidget(selectPropositionButton);
 
@@ -230,6 +243,8 @@ QLayout *MainWindow::createViewProposition()
     qboxLayout5->addLayout(qboxLayout6);
     qboxLayout5->addLayout(qboxLayout7);
     qboxLayout5->addLayout(qboxLayout3);
+
+    populateDropdownReponse();
 
     return qboxLayout5;
 }
@@ -302,9 +317,6 @@ QLayout *MainWindow::createViewTheme()
     deleteThemeButton = new QPushButton ("Supprimer");
     selectThemeButton = new QPushButton("Selectionner");
 
-    populateDropdownTheme();
-
-
     qboxLayout1->addWidget(textTheme);
     qboxLayout1->addWidget(dropdownTheme);
     qboxLayout1->addWidget(selectThemeButton);
@@ -319,6 +331,8 @@ QLayout *MainWindow::createViewTheme()
     qboxLayout5->addLayout(qboxLayout1);
     qboxLayout5->addLayout(qboxLayout2);
     qboxLayout5->addLayout(qboxLayout3);
+
+    populateDropdownTheme();
 
 
     return qboxLayout5;
@@ -401,6 +415,7 @@ QLayout *MainWindow::createViewUser()
     qboxLayout8->addLayout(qboxLayout6);
     qboxLayout8->addLayout(qboxLayout7);
 
+    populateDropdownUser();
 
     return qboxLayout8;
 
@@ -426,19 +441,48 @@ QLayout *MainWindow::createViewLogout()
 
 void MainWindow::populateDropdownTheme()
 {
-//    model->requestTheme(2, "", 0);
-//    sql::ResultSet *result = model->result;
-//    qDebug() << result->getString(2).c_str();
-//    while(result->next())
-//    {
-//        dropdownTheme->addItem(tr(result->getString(2).c_str()), QVariant(result->getInt(1)));
-//        result->next();
-//    }
+    QString password = "burgerquiz";
+    QString ip ="127.0.0.1";
+    model->connectToDatabase(password,ip);
+    model->requestTheme(2, ip, 1);
 
-    dropdownTheme->addItem(tr("rfg1"), QVariant(25741));
-    dropdownTheme->addItem(tr("rfg2"), QVariant(258157492));
-    dropdownTheme->addItem(tr("rfg3"), QVariant(38));
+    while(model->result->next())
+    {
+        dropdownTheme->addItem(tr(model->result->getString(2).c_str()));
+    }
+}
 
+void MainWindow::populateDropdownReponse()
+{
+    dropdownReponse1->addItem("libelle 1");
+    dropdownReponse1->addItem("libelle 2");
+    dropdownReponse1->addItem("les 2");
+    dropdownReponse2->addItem("libelle 1");
+    dropdownReponse2->addItem("libelle 2");
+    dropdownReponse2->addItem("les 2");
+    dropdownReponse3->addItem("libelle 1");
+    dropdownReponse3->addItem("libelle 2");
+    dropdownReponse3->addItem("les 2");
+
+}
+
+void MainWindow::populateDropdownUser()
+{
+    QString password = "burgerquiz";
+    QString ip ="127.0.0.1";
+    model->connectToDatabase(password,ip);
+    model->requestUser(2, ip, ip, ip, ip, ip, 1, ip);
+
+
+    while(model->result->next())
+    {
+        dropdownUser->addItem(tr(model->result->getString(1).c_str()));
+    }
+
+}
+
+void MainWindow::populateDropdownQuestion()
+{
 
 }
 
@@ -454,6 +498,7 @@ void MainWindow::slotLogin()
 
 //    if(auth == 1)
 //    {
+//        model->connectToDatabase(passwordDb,ip);
 //        onglets->setVisible(true);
 //        widgetGeneral->setVisible(false);
 
@@ -481,14 +526,18 @@ void MainWindow::slotAddTheme()
 {
     QString theme = inputTheme->text();
     int id = dropdownTheme->itemData(dropdownTheme->currentIndex()).toInt();
-    qDebug() << "id" << id;
+    int id2 = 1;
 
     QMessageBox::StandardButton reponse;
-    reponse = QMessageBox::question(this, "Ajout d'un theme", "Voulez-vous mettre a jour le theme "+ theme +"?", QMessageBox::Yes|QMessageBox::No);
+    reponse = QMessageBox::question(this, "Ajout d'un theme", "Voulez-vous ajouter le theme "+ theme +"?", QMessageBox::Yes|QMessageBox::No);
 
     if(reponse ==  QMessageBox::Yes && model->verificationData(theme))
     {
-        model->requestTheme(1, theme,id);\
+        QString password = "burgerquiz";
+        QString ip ="127.0.0.1";
+        model->connectToDatabase(password,ip);
+        model->requestTheme(1, theme, id2);
+
 
         if(model->getRequestEffect())
         {
@@ -573,6 +622,17 @@ void MainWindow::slotSelectTheme()
      * demande de l'info de l'id en base
      * affichage de la requete dans les champs
     */
+
+    QString theme = dropdownTheme->currentText();
+
+//    QString password = "burgerquiz";
+//    QString ip ="127.0.0.1";
+//    model->connectToDatabase(password,ip);
+//    model->requestTheme(3, theme, 1);
+//    model->result->next();
+
+    inputTheme->setText(theme);
+
 }
 
 void MainWindow::slotAddQuestion()
@@ -580,8 +640,13 @@ void MainWindow::slotAddQuestion()
 
     QString libelle1 = addQuestion1->text();
     QString libelle2 = addQuestion2->text();
-    int idQuestion; /* = idQuestion selected*/
-    int idTheme; /* = idQuestion selected*/
+    int idQuestion =1;
+    int idTheme = 1; /* = idQuestion selected*/
+
+    QString password = "burgerquiz";
+    QString ip ="127.0.0.1";
+    model->connectToDatabase(password,ip);
+    model->requestQuestions(1, libelle1, libelle2, idTheme, idQuestion);
 
 
     QMessageBox::StandardButton reponse;
@@ -690,20 +755,28 @@ void MainWindow::slotAddProposition()
     QString proposition1 = addProposition1->text();
     QString proposition2 = addProposition2->text();
     QString proposition3 = addProposition3->text();
-    int reponseProposition1;
-    int reponseProposition2;
-    int reponseProposition3;
-    int idQuestion;
-    int idProposition;
+    int reponseProposition1 = dropdownReponse1->currentIndex()+1;
+    int reponseProposition2 = dropdownReponse2->currentIndex()+1;
+    int reponseProposition3 = dropdownReponse3->currentIndex()+1;
+    int idQuestion =1;
+    int idProposition =1;
+
+    QString password = "burgerquiz";
+    QString ip ="127.0.0.1";
+    model->connectToDatabase(password,ip);
+    model->requestPropositions(1, idProposition, proposition1, reponseProposition1, idQuestion);
+    model->requestPropositions(1, idProposition, proposition2, reponseProposition2, idQuestion);
+    model->requestPropositions(1, idProposition, proposition3, reponseProposition3, idQuestion);
+
 
     QMessageBox::StandardButton reponse;
-    reponse = QMessageBox::question(this, "Ajout d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" vont etre supprimes de la base", QMessageBox::Yes|QMessageBox::No);
+    reponse = QMessageBox::question(this, "Ajout d'une proposition", "Les propositions"+proposition1 +","+proposition2 +"," + proposition3 +" vont etre ajoutees de la base", QMessageBox::Yes|QMessageBox::No);
 
     if(reponse ==  QMessageBox::Yes && model->verificationData(proposition1) && model->verificationData(proposition2) && model->verificationData(proposition3))
     {
-        model->requestPropositions(5, idProposition, proposition1, reponseProposition1, idQuestion);\
-        model->requestPropositions(5, idProposition, proposition2, reponseProposition2, idQuestion);
-        model->requestPropositions(5, idProposition, proposition3, reponseProposition3, idQuestion);
+//        model->requestPropositions(5, idProposition, proposition1, reponseProposition1, idQuestion);\
+//        model->requestPropositions(5, idProposition, proposition2, reponseProposition2, idQuestion);
+//        model->requestPropositions(5, idProposition, proposition3, reponseProposition3, idQuestion);
 
         if(model->getRequestEffect())
         {
@@ -860,6 +933,9 @@ void MainWindow::slotAddUser()
         inputFirstname->clear();
         inputPasswordUser->clear();
         inputPasswordVerifUser->clear();
+        inputMail->clear();
+        inputAvatar->clear();
+
 
     }
 
@@ -877,18 +953,18 @@ void MainWindow::slotUpdateUser()
     bool yesVip = adminYesRadio->isChecked();
 
     QMessageBox::StandardButton reponse;
-    reponse = QMessageBox::question(this, "Ajout d'un utilisateur", "L'utilisateur "+pseudo +" va etre ajoute a la base", QMessageBox::Yes|QMessageBox::No);
+    reponse = QMessageBox::question(this, "Ajout d'un utilisateur", "L'utilisateur "+pseudo +" va etre mis a jour dans la base", QMessageBox::Yes|QMessageBox::No);
 
     if(reponse ==  QMessageBox::Yes && password == passwordVerif && model->verificationData(pseudo) && model->verificationData(name) && model->verificationData(lastname) && model->verificationData(password) && model->verificationData(passwordVerif))
     {
-        model->requestUser(1, pseudo, password, mail, name, lastname, yesVip, avatar);
+        model->requestUser(4, pseudo, password, mail, name, lastname, yesVip, avatar);
 
         if(model->getRequestEffect())
         {
-            reponse = QMessageBox::question(this, "Ajout d'un utilisateur", "L'utilisateur "+pseudo +" a ete ajoute a la base", QMessageBox::Yes|QMessageBox::No);
+            reponse = QMessageBox::question(this, "Ajout d'un utilisateur", "L'utilisateur "+pseudo +" a ete mis a jour dans la base", QMessageBox::Yes|QMessageBox::No);
         }
         else {
-            reponse = QMessageBox::question(this, "[ERREUR] Ajout d'un utilisateur", "L'utilisateur "+pseudo +" n'a pas ete ajoute a la base", QMessageBox::Yes|QMessageBox::No);
+            reponse = QMessageBox::question(this, "[ERREUR] Ajout d'un utilisateur", "L'utilisateur "+pseudo +" n'a pas ete mis a jour dana la base", QMessageBox::Yes|QMessageBox::No);
         }
     }
     else {
@@ -900,6 +976,11 @@ void MainWindow::slotUpdateUser()
         inputFirstname->clear();
         inputPasswordUser->clear();
         inputPasswordVerifUser->clear();
+        inputMail->clear();
+        inputMail->clear();
+        inputAvatar->clear();
+
+
 
     }
 
@@ -920,7 +1001,7 @@ void MainWindow::slotDeleteUser()
     QMessageBox::StandardButton reponse;
     reponse = QMessageBox::question(this, "Suppression d'un utilisateur", "L'utilisateur "+pseudo +" va etre supprime de la base", QMessageBox::Yes|QMessageBox::No);
 
-    if(reponse ==  QMessageBox::Yes && password == passwordVerif && model->verificationData(pseudo) && model->verificationData(name) && model->verificationData(lastname) && model->verificationData(password) && model->verificationData(passwordVerif))
+    if(reponse ==  QMessageBox::Yes && password == passwordVerif && model->verificationData(pseudo) && model->verificationData(name) && model->verificationData(lastname))
     {
         model->requestUser(5, pseudo, password, mail, name, lastname, yesVip, avatar);
 
@@ -940,12 +1021,41 @@ void MainWindow::slotDeleteUser()
         inputName->clear();
         inputFirstname->clear();
         inputPasswordUser->clear();
+        inputMail->clear();
         inputPasswordVerifUser->clear();
+        inputAvatar->clear();
+
 
     }
+
+    inputPseudo->clear();
+    inputName->clear();
+    inputFirstname->clear();
+    inputPasswordUser->clear();
+    inputMail->clear();
+    inputPasswordVerifUser->clear();
+    inputAvatar->clear();
+
+
 }
 
 void MainWindow::slotSelectUser()
 {
+    QString pseudo = dropdownUser->currentText();
+
+    QString password = "burgerquiz";
+    QString ip ="127.0.0.1";
+    model->connectToDatabase(password,ip);
+    model->requestUser(3, pseudo, pseudo, pseudo, pseudo, pseudo, 1, pseudo);
+    model->result->next();
+
+    inputPseudo->setText(pseudo);
+    inputName->setText(model->result->getString(4).c_str());
+    inputFirstname->setText(model->result->getString(5).c_str());
+    inputMail->setText(model->result->getString(3).c_str());
+    inputAvatar->setText(model->result->getString(7).c_str());
+
+    if(model->result->getBoolean(6) == 1) adminYesRadio->setChecked(1);
+    if(model->result->getBoolean(6) == 0) adminNoRadio->setChecked(1);
 
 }

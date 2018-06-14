@@ -41,6 +41,10 @@ void Model::connectToDatabase(QString password, QString ip)
 
 void Model::requestUser(int requestType, QString pseudo, QString password, QString mail, QString name, QString lastname, bool vip, QString avatar)
 {
+
+    QByteArray ba = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
+    QString hash = ba.toHex();
+
     if(requestType == 1)
     {
         //requete ajout
@@ -48,7 +52,7 @@ void Model::requestUser(int requestType, QString pseudo, QString password, QStri
         statement = connection->prepareStatement("INSERT INTO USER (pseudo, password, mail, name, lastname, vip, avatar)"
                                                 " VALUES (?,?,?,?,?,?,?)");
         statement->setString(1,pseudo.toStdString());
-        statement->setString(2,password.toStdString());
+        statement->setString(2,hash.toStdString());
         statement->setString(3,mail.toStdString());
         statement->setString(4,name.toStdString());
         statement->setString(5,lastname.toStdString());
@@ -67,6 +71,7 @@ void Model::requestUser(int requestType, QString pseudo, QString password, QStri
         statement = connection->prepareStatement("SELECT * FROM USER");
 
         result = statement->executeQuery();
+//        qDebug() << "tets" << result->getString(1).c_str();
         setRequestEffect(result);
         return;
 
@@ -90,15 +95,14 @@ void Model::requestUser(int requestType, QString pseudo, QString password, QStri
     if(requestType == 4)
     {
         //requete update
-        statement = connection->prepareStatement("UPDATE USER SET pseudo = ?, password = ?, mail = ?, name =?, lastname=?, vip =?, avatar =?;");
+        statement = connection->prepareStatement("UPDATE USER SET password = ?, mail = ?, name =?, lastname=?, vip =?, avatar =?;");
 
-        statement->setString(1,pseudo.toStdString());
-        statement->setString(2,password.toStdString());
-        statement->setString(3,mail.toStdString());
-        statement->setString(4,name.toStdString());
-        statement->setString(5,lastname.toStdString());
-        statement->setBoolean(6,vip);
-        statement->setString(7,avatar.toStdString());
+        statement->setString(1,hash.toStdString());
+        statement->setString(2,mail.toStdString());
+        statement->setString(3,name.toStdString());
+        statement->setString(4,lastname.toStdString());
+        statement->setBoolean(5,vip);
+        statement->setString(6,avatar.toStdString());
 
 
         result = statement->executeQuery();
@@ -134,7 +138,7 @@ void Model::requestTheme(int requestType, QString nom, int id)
     {
 
         //requete ajout
-        statement = connection->prepareStatement("INSERT INTO THEME (id_theme, name_theme) VALUES (NULL, '?');");
+        statement = connection->prepareStatement("INSERT INTO THEME (id_theme, name_theme) VALUES (NULL, ?);");
         statement->setString(1,nom.toStdString());
 
         result = statement->executeQuery();
@@ -148,7 +152,7 @@ void Model::requestTheme(int requestType, QString nom, int id)
     if(requestType == 2)
     {
         //requete read all
-        statement = connection->prepareStatement("SELECT * FROM theme");
+        statement = connection->prepareStatement("SELECT * FROM THEME");
 
         result = statement->executeQuery();
         setRequestEffect(result);
@@ -161,9 +165,9 @@ void Model::requestTheme(int requestType, QString nom, int id)
     if(requestType == 3)
     {
         //requete read 1
-        statement = connection->prepareStatement("SELECT * FROM theme WHERE id_theme = ?");
+        statement = connection->prepareStatement("SELECT * FROM THEME WHERE name_theme = ?");
 
-        statement->setInt(1,id);
+        statement->setString(1,nom.toStdString());
 
         result = statement->executeQuery();
         setRequestEffect(result);
@@ -176,7 +180,7 @@ void Model::requestTheme(int requestType, QString nom, int id)
     if(requestType == 4)
     {
         //requete update
-        statement = connection->prepareStatement("UPDATE theme SET name_theme = ? WHERE theme.id_theme = ?");
+        statement = connection->prepareStatement("UPDATE THEME SET name_theme = ? WHERE THEME.id_theme = ?");
 
         statement->setString(1,nom.toStdString());
         statement->setInt(2, id);
@@ -191,7 +195,7 @@ void Model::requestTheme(int requestType, QString nom, int id)
 
     if(requestType == 5)
     {
-        statement = connection->prepareStatement("DELETE FROM theme WHERE theme.id_theme = ?");
+        statement = connection->prepareStatement("DELETE FROM THEME WHERE theme.id_theme = ?");
 
         statement->setInt(1,id);
 
@@ -212,7 +216,7 @@ void Model::requestQuestions(int requestType, QString libelle2, QString libelle1
     {
         //requete ajout
 
-        statement = connection->prepareStatement("INSERT INTO questions (id_question, libelle1, libelle2, id_theme) VALUES (NULL, ?,?,?)");
+        statement = connection->prepareStatement("INSERT INTO QUESTIONS (id_question, libelle1, libelle2, id_theme) VALUES (NULL, ?,?,?)");
 
         statement->setString(1,libelle1.toStdString());
         statement->setString(2,libelle2.toStdString());
@@ -286,7 +290,7 @@ void Model::requestPropositions(int requestType, int idPropositions, QString pro
     if(requestType == 1)
     {
         //requete ajout
-        statement = connection->prepareStatement("INSERT INTO propositions (id_propositions, proposition, reponse_question, id_question) VALUES (NULL, ?, ?, ?);");
+        statement = connection->prepareStatement("INSERT INTO PROPOSITIONS (id_propositions, proposition, reponse_question, id_question) VALUES (NULL, ?, ?, ?);");
 
         statement->setString(1,proposition.toStdString());
         statement->setInt(2,reponseQuestion);
@@ -369,6 +373,8 @@ bool Model::authentificationUser(QString pseudo, QString password, QString passw
     QString hash = ba2.toHex();
     bool vip;
 
+    qDebug()<<"hash" << hash;
+
     QFile file("bdd.conf");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream flux(&file);
@@ -429,4 +435,11 @@ bool Model::getRequestEffect()
 void Model::setRequestEffect(bool reponse)
 {
     requestEffect = reponse;
+}
+
+int Model::verificationRadio(QRadioButton *radio1, QRadioButton *radio2, QRadioButton *radio3)
+{
+    if(radio1->isChecked()) return 1;
+    if(radio2->isChecked()) return 2;
+    if(radio3->isChecked()) return 3;
 }

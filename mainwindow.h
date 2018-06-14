@@ -45,6 +45,9 @@ public:
      QLayout *createViewLogout();
 
      void populateDropdownTheme();
+     void populateDropdownReponse();
+     void populateDropdownUser();
+     void populateDropdownQuestion();
 
 private:
 
@@ -97,6 +100,11 @@ private:
      QPushButton *selectPropositionButton;
      QLabel *addPropositionLabel;
      QLabel *answerPropositionLabel;
+
+     QComboBox *dropdownReponse1;
+     QComboBox *dropdownReponse2;
+     QComboBox *dropdownReponse3;
+
 
      //interface question
      QComboBox *dropdownQuestion;

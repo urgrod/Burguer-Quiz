@@ -7,6 +7,7 @@
 #include <QTextStream>
 #include <QDebug>
 #include <QCryptographicHash>
+#include <QRadioButton>
 #include <cppconn/driver.h>
 #include <cppconn/exception.h>
 #include <cppconn/resultset.h>
@@ -25,16 +26,18 @@ public:
 
     bool authentificationUser(QString pseudo, QString password, QString passwordDatabase, QString ip);
     bool verificationData(QString data);
+    int verificationRadio(QRadioButton *radio1, QRadioButton *radio2, QRadioButton *radio3);
 
     bool getRequestEffect();
     void setRequestEffect(bool reponse);
 
 
+    sql::ResultSet *result;
+
 private:
     sql::Driver *driver;
     sql::Connection *connection;
     sql::PreparedStatement *statement;
-    sql::ResultSet *result;
     bool requestEffect;
 
 
