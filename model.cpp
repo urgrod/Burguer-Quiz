@@ -195,7 +195,7 @@ void Model::requestTheme(int requestType, QString nom, int id)
 
     if(requestType == 5)
     {
-        statement = connection->prepareStatement("DELETE FROM THEME WHERE theme.id_theme = ?");
+        statement = connection->prepareStatement("DELETE FROM THEME WHERE THEME.id_theme = ?");
 
         statement->setInt(1,id);
 
@@ -256,7 +256,7 @@ void Model::requestQuestions(int requestType, QString libelle2, QString libelle1
     if(requestType == 4)
     {
         //requete update
-        statement = connection->prepareStatement("UPDATE QUESTIONS SET libelle1 = ?, libelle2 = ?, WHERE QUESTIONS.id_question = ?;");
+        statement = connection->prepareStatement("UPDATE `QUESTIONS` SET `libelle1` = ?, `libelle2` = ? WHERE `QUESTIONS`.`id_question` = ?;");
 
         statement->setString(1,libelle1.toStdString());
         statement->setString(2,libelle2.toStdString());
@@ -271,7 +271,7 @@ void Model::requestQuestions(int requestType, QString libelle2, QString libelle1
     if(requestType == 5)
     {
         //requete delete
-        statement = connection->prepareStatement("DELETE FROM QUESTIONS WHERE id_question = ?;");
+        statement = connection->prepareStatement("DELETE FROM `QUESTIONS` WHERE `QUESTIONS`.`id_question` = ?");
 
         statement->setInt(1,idQuestion);
 

@@ -30,14 +30,8 @@ a faire:
 page d'accueil
 appel de chaque populate a chaque requete
 
-THEME:
-U --> manque l'id dans le menu deroulant
-D--> manque l'id dans le menu deroulant
 
-QUESTIONS:
-C --> manque l'id du theme dans le menu deroulant
-R --> manque l'id du theme dans le menu deroulant
-D --> manque l'id du theme dans le menu deroulant
+ajout d'un champ invisible id a chaque page et on y rentre l'id dans ce fdp
 
 PROPOSITIONS:
 C -->manque l'id de la question

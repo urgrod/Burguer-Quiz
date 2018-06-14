@@ -84,48 +84,36 @@ private:
      //interface d'accueil
 
      //interface proposition
-//     QComboBox *dropdownProposition;
      QLineEdit *addProposition1;
-//     QLineEdit *addProposition2;
-//     QLineEdit *addProposition3;
-//     QRadioButton *answerRadio1;
-//     QRadioButton *answerRadio2;
-//     QRadioButton *answerRadio3;
-//     QRadioButton *answerRadio4;
-//     QRadioButton *answerRadio5;
-//     QRadioButton *answerRadio6;
-//     QRadioButton *answerRadio7;
-//     QRadioButton *answerRadio8;
-//     QRadioButton *answerRadio9;
+     QLineEdit *idProposition;
      QPushButton *addPropositionButton;
      QPushButton *updatePropositionButton;
      QPushButton *deletePropositionButton;
-//     QPushButton *selectPropositionButton;
      QLabel *addPropositionLabel;
      QLabel *answerPropositionLabel;
      QTableWidget *tableProposition;
-
+     QTableWidget *tableQuestionProposition;
      QComboBox *dropdownReponse1;
-//     QComboBox *dropdownReponse2;
-//     QComboBox *dropdownReponse3;
 
 
      //interface question
      QTableWidget *tableQuestion;
+     QTableWidget *tableThemeQuestion;
      QLabel *choiceQuestionLabel;
      QLineEdit *addQuestion1;
      QLineEdit *addQuestion2;
+     QLineEdit *idQuestion;
      QLabel *textLabel1;
      QLabel *textLabel2;
      QLabel *textLabel3;
      QPushButton *addQuestionButton;
      QPushButton *updateQuestionButton;
      QPushButton *deleteQuestionButton;
-//     QPushButton *selectQuestionButton;
 
      //interface theme
      QLabel *textTheme;
      QLineEdit *inputTheme;
+     QLineEdit *idTheme;
      QPushButton *addThemeButton;
      QPushButton *updateThemeButton;
      QPushButton *deleteThemeButton;
@@ -165,19 +153,19 @@ public slots:
      void slotLogin();
      void slotLogout();
 
-     void slotAddTheme(int row, int coll);
-     void slotUpdateTheme(int row, int coll);
-     void slotDeleteTheme(int row, int coll);
+     void slotAddTheme();
+     void slotUpdateTheme();
+     void slotDeleteTheme();
      void slotSelectTheme(int row, int coll);
 
-     void slotAddQuestion(int row, int coll);
-     void slotUpdateQuestion(int row, int coll);
-     void slotDeleteQuestion(int row, int coll);
+     void slotAddQuestion();
+     void slotUpdateQuestion();
+     void slotDeleteQuestion();
      void slotSelectQuestion(int row, int coll);
 
-     void slotAddProposition(int row, int coll);
-     void slotUpdateProposition(int row, int coll);
-     void slotDeleteProposition(int row, int coll);
+     void slotAddProposition();
+     void slotUpdateProposition();
+     void slotDeleteProposition();
      void slotSelectProposition(int row, int coll);
 
      void slotAddUser();
