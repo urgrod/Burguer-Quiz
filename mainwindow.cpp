@@ -78,18 +78,17 @@ MainWindow::MainWindow() : QMainWindow()
     connect(tableThemeQuestion, SIGNAL(cellClicked(int,int)), this, SLOT(slotSelectTheme(int,int)));
     connect(tableQuestionProposition, SIGNAL(cellClicked(int,int)), this, SLOT(slotSelectQuestion(int,int)));
 
-    populateDropdownTheme();
-    populateDropdownQuestion();
-    populateDropdownReponse();
-    populateDropdownProposition();
-    populateDropdownScore();
-    populateDropdownQuestion();
-    populateDropdownProposition();
-    populateDropdownTheme();
-    populateDropdownScore();
 
 
-
+//    populateDropdownTheme();
+//    populateDropdownQuestion();
+//    populateDropdownReponse();
+//    populateDropdownProposition();
+//    populateDropdownScore();
+//    populateDropdownQuestion();
+//    populateDropdownProposition();
+//    populateDropdownTheme();
+//    populateDropdownScore();
 
 //    populateDropdownUser();
 
@@ -144,7 +143,7 @@ QLayout *MainWindow::createViewLogin()
     qboxLayout4->addLayout(qboxLayout3);
 
 
-    populateDropdownScore();
+//    populateDropdownScore();
     return qboxLayout4;
 }
 
@@ -250,7 +249,7 @@ QLayout *MainWindow::createViewProposition()
     qboxLayout5->addLayout(qboxLayout7);
     qboxLayout5->addLayout(qboxLayout3);
 
-    populateDropdownProposition();
+//    populateDropdownProposition();
 
     return qboxLayout5;
 }
@@ -305,7 +304,7 @@ QLayout *MainWindow::createViewQuestion()
     qboxLayout5->addLayout(qboxLayout4);
 
 //    populateDropdownQuestion();
-    populateDropdownTheme();
+//    populateDropdownTheme();
 
     return qboxLayout5;
 
@@ -430,7 +429,7 @@ QLayout *MainWindow::createViewUser()
     qboxLayout8->addLayout(qboxLayout6);
     qboxLayout8->addLayout(qboxLayout7);
 
-    populateDropdownUser();
+//    populateDropdownUser();
 
     return qboxLayout8;
 
@@ -456,8 +455,8 @@ QLayout *MainWindow::createViewLogout()
 
 void MainWindow::populateDropdownTheme()
 {
-    QString password = "burgerquiz";
-    QString ip ="127.0.0.1";
+    QString password = /*"burgerquiz" */passwordDatabaseInput->text();
+    QString ip =/*"127.0.0.1" */ipDatabaseInput->text();
     int row =0;
     model->connectToDatabase(password,ip);
     model->requestTheme(2, ip, 1);
@@ -511,8 +510,8 @@ void MainWindow::populateDropdownReponse()
 
 void MainWindow::populateDropdownUser()
 {
-    QString password = "burgerquiz";
-    QString ip ="127.0.0.1";
+    QString password = /*"burgerquiz" */passwordDatabaseInput->text();
+    QString ip =/*"127.0.0.1" */ipDatabaseInput->text();
     model->connectToDatabase(password,ip);
     model->requestUser(2, ip, ip, ip, ip, ip, 1, ip);
 
@@ -528,8 +527,8 @@ void MainWindow::populateDropdownUser()
 
 void MainWindow::populateDropdownProposition()
 {
-    QString password = "burgerquiz";
-    QString ip ="127.0.0.1";
+    QString password = /*"burgerquiz" */passwordDatabaseInput->text();
+    QString ip =/*"127.0.0.1" */ipDatabaseInput->text();
     int row =0;
     model->connectToDatabase(password,ip);
     model->requestPropositions(2, 1, ip, 1, 1);
@@ -560,8 +559,8 @@ void MainWindow::populateDropdownProposition()
 void MainWindow::populateDropdownQuestion()
 {
 
-    QString password = "burgerquiz";
-    QString ip ="127.0.0.1";
+    QString password = /*"burgerquiz" */passwordDatabaseInput->text();
+    QString ip =/*"127.0.0.1" */ipDatabaseInput->text();
     int row =0;
     model->connectToDatabase(password,ip);
     model->requestQuestions(2, ip, ip, 1, 1);
@@ -598,8 +597,8 @@ void MainWindow::populateDropdownQuestion()
 
 void MainWindow::populateDropdownScore()
 {
-    QString password = "burgerquiz";
-    QString ip ="127.0.0.1";
+    QString password = /*"burgerquiz" */passwordDatabaseInput->text();
+    QString ip =/*"127.0.0.1" */ipDatabaseInput->text();
     int row =0;
     model->connectToDatabase(password,ip);
     model->requestScore();
@@ -650,6 +649,18 @@ void MainWindow::slotLogin()
         onglets->setVisible(true);
         widgetGeneral->setVisible(false);
 
+        populateDropdownTheme();
+        populateDropdownQuestion();
+        populateDropdownReponse();
+        populateDropdownProposition();
+        populateDropdownScore();
+        populateDropdownQuestion();
+        populateDropdownProposition();
+        populateDropdownTheme();
+        populateDropdownScore();
+        populateDropdownUser();
+
+
     }
 
     else
@@ -681,8 +692,8 @@ void MainWindow::slotAddTheme()
 
     if(reponse ==  QMessageBox::Yes && model->verificationData(theme))
     {
-        QString password = "burgerquiz";
-        QString ip ="127.0.0.1";
+        QString password = /*"burgerquiz" */passwordDatabaseInput->text();
+        QString ip =/*"127.0.0.1" */ipDatabaseInput->text();
         model->connectToDatabase(password,ip);
         model->requestTheme(1, theme, id2);
 
@@ -797,8 +808,8 @@ void MainWindow::slotAddQuestion()
     int idQ = idQuestion->text().toInt();
     int idT = idTheme->text().toInt();
 
-    QString password = "burgerquiz";
-    QString ip ="127.0.0.1";
+    QString password = /*"burgerquiz" */passwordDatabaseInput->text();
+    QString ip =/*"127.0.0.1" */ipDatabaseInput->text();
     model->connectToDatabase(password,ip);
 
     QMessageBox::StandardButton reponse;
@@ -926,8 +937,8 @@ void MainWindow::slotAddProposition()
     int idQ = idQuestion->text().toInt();
     int idP = idProposition->text().toInt();
 
-    QString password = "burgerquiz";
-    QString ip ="127.0.0.1";
+    QString password = /*"burgerquiz" */passwordDatabaseInput->text();
+    QString ip =/*"127.0.0.1" */ipDatabaseInput->text();
     model->connectToDatabase(password,ip);
 
 
@@ -1194,8 +1205,8 @@ void MainWindow::slotSelectUser()
 {
     QString pseudo = dropdownUser->currentText();
 
-    QString password = "burgerquiz";
-    QString ip ="127.0.0.1";
+    QString password = /*"burgerquiz" */passwordDatabaseInput->text();
+    QString ip =/*"127.0.0.1" */ipDatabaseInput->text();
     model->connectToDatabase(password,ip);
     model->requestUser(3, pseudo, pseudo, pseudo, pseudo, pseudo, 1, pseudo);
     model->result->next();

@@ -24,7 +24,7 @@ void Model::connectToDatabase(QString password, QString ip)
 //    connection = driver->connect(("tcp://" + ip2.toStdString() + ":3306"), line[1].toStdString(), password.toStdString());
 //    connection = driver->connect(("tcp://" + ip.toStdString() + ":3306"), line[1].toStdString(), "burgerquiz");
 //      connection = driver->connect(("tcp://" + ip.toStdString() + ":3306"), line[1].toStdString(), "burgerquiz");
-    connection = driver->connect(("tcp://" + ip.toStdString() + ":3306"), line[1].toStdString(), "burgerquiz"/*password.toStdString()*/);
+    connection = driver->connect(("tcp://" + ip.toStdString() + ":3306"), line[1].toStdString(), /*"burgerquiz"*/password.toStdString());
 
 
 
@@ -395,7 +395,7 @@ bool Model::authentificationUser(QString pseudo, QString password, QString passw
 
     if(line[2] == hashDatabase)
     {
-        connectToDatabase(password, ip);
+        connectToDatabase(passwordDatabase, ip);
 
         requestUser(3, pseudo, password, pseudo, pseudo, pseudo, vip, pseudo);
 
